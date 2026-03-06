@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hua — AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F4EFE4;--cream-dark:#EAE3D4;--ink:#1C1A16;
+  --ink-mid:#3D3A32;--ink-light:#7A7568;--rule:#C8BFA8;
+  --red:#9B2B2B;--red-light:#C94040;--gold:#B8923A;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'DM Mono',monospace;overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s}
+#cur-ring{position:fixed;width:32px;height:32px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .25s ease;opacity:.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(244,239,228,.92);backdrop-filter:blur(12px);border-color:var(--rule)}
+.nav-wordmark{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.nav-wordmark em{color:var(--red);font-style:italic}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:var(--ink-light);text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--red);transition:width .25s ease}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule);overflow:hidden;position:relative}
+.hero-left{padding:140px 60px 80px 80px;display:flex;flex-direction:column;justify-content:flex-end;border-right:1px solid var(--rule);position:relative}
+.hero-issue{position:absolute;top:100px;left:80px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light)}
+.hero-issue span{color:var(--red)}
+.hero-headline{font-family:'Playfair Display',serif;font-size:clamp(64px,8vw,108px);font-weight:900;line-height:.92;letter-spacing:-.04em;color:var(--ink);margin-bottom:32px}
+.hero-headline .italic{font-style:italic;color:var(--red)}
+.hero-sub{font-size:12px;letter-spacing:.06em;color:var(--ink-light);line-height:1.9;max-width:380px;margin-bottom:48px}
+.hero-cta{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--cream);text-decoration:none;padding:14px 28px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;transition:background .2s,gap .2s;width:fit-content}
+.hero-cta:hover{background:var(--red);gap:20px}
+.hero-scroll{position:absolute;bottom:40px;left:80px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:12px}
+.hero-scroll-line{width:48px;height:1px;background:var(--rule);animation:scrollline 2s ease-in-out infinite}
+@keyframes scrollline{0%,100%{width:48px;opacity:.4}50%{width:72px;opacity:1}}
+
+.hero-right{padding:140px 80px 80px 60px;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);position:relative;overflow:hidden}
+.hero-bg-text{position:absolute;font-family:'Playfair Display',serif;font-size:clamp(120px,18vw,280px);font-weight:900;color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-.05em}
+.hero-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,228,.35);align-self:flex-end}
+.hero-details{display:flex;flex-direction:column;gap:32px}
+.hero-detail-item{border-top:1px solid rgba(200,191,168,.15);padding-top:20px}
+.hero-detail-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,228,.3);margin-bottom:6px}
+.hero-detail-value{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);font-style:italic}
+
+/* LOAD ANIMATION */
+.hero-left .hero-issue,.hero-left .hero-headline,.hero-left .hero-sub,.hero-left .hero-cta,.hero-right .hero-tag,.hero-right .hero-details{opacity:0;transform:translateY(28px);animation:fadeUp .8s ease forwards}
+.hero-left .hero-issue{animation-delay:.1s}
+.hero-left .hero-headline{animation-delay:.25s}
+.hero-left .hero-sub{animation-delay:.4s}
+.hero-left .hero-cta{animation-delay:.55s}
+.hero-right .hero-tag{animation-delay:.35s}
+.hero-right .hero-details{animation-delay:.5s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* RUNNING HEADER */
+.running-head{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);padding:12px 80px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;background:var(--cream);position:sticky;top:65px;z-index:50}
+
+/* SECTION BASE */
+.section-header{display:grid;grid-template-columns:80px 1fr;align-items:baseline;padding:60px 80px 40px;border-bottom:1px solid var(--rule);gap:32px}
+.section-num{font-size:11px;letter-spacing:.12em;color:var(--ink-light);padding-top:4px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em}
+.section-title em{font-style:italic;color:var(--red)}
+
+/* ABOUT */
+#about .about-body{display:grid;grid-template-columns:1fr 1fr 300px;min-height:420px}
+.about-col{padding:48px 56px;border-right:1px solid var(--rule)}
+.about-col:last-child{border-right:none}
+.about-col p{font-size:14px;line-height:1.9;color:var(--ink-mid);margin-bottom:20px}
+.about-col p:first-child::first-letter{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;float:left;line-height:.8;margin-right:8px;margin-top:6px;color:var(--red)}
+.about-pull{font-family:'Playfair Display',serif;font-size:21px;font-style:italic;font-weight:400;line-height:1.45;color:var(--ink);border-left:3px solid var(--red);padding-left:24px;margin:32px 0}
+.about-sidebar{padding:48px 36px;background:var(--ink);color:var(--cream)}
+.about-sidebar-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,239,228,.4);margin-bottom:8px}
+.about-sidebar-value{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:28px;color:var(--cream)}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(200,191,168,.25);color:rgba(244,239,228,.6)}
+
+/* EXPERIENCE */
+#experience .exp-body{padding:0 80px 80px}
+.exp-item{display:grid;grid-template-columns:200px 1fr 1fr;gap:40px;padding:48px 0;border-bottom:1px solid var(--rule)}
+.exp-date{font-size:12px;color:var(--ink-light);letter-spacing:.06em;line-height:1.8;padding-top:4px}
+.exp-date strong{display:block;font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.exp-role{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px}
+.exp-company{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:20px}
+.exp-desc{font-size:13px;color:var(--ink-mid);line-height:1.85}
+.exp-meta-item{font-size:12px;color:var(--ink-light);border-left:2px solid var(--rule);padding-left:16px;margin-bottom:16px;line-height:1.6}
+.exp-meta-item strong{display:block;color:var(--ink);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+
+/* PROJECTS */
+#projects .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.proj-card{padding:52px 60px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);position:relative;overflow:hidden}
+.proj-card:nth-child(even){border-right:none}
+.proj-card::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .45s cubic-bezier(.76,0,.24,1);z-index:0}
+.proj-card:hover::before{transform:translateY(0)}
+.proj-card>*{position:relative;z-index:1;transition:color .3s}
+.proj-card:hover .proj-num,.proj-card:hover .proj-name,.proj-card:hover .proj-desc{color:var(--cream)!important}
+.proj-card:hover .proj-stack span{border-color:rgba(244,239,228,.2);color:rgba(244,239,228,.6)}
+.proj-num{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:24px}
+.proj-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1.15;margin-bottom:16px;letter-spacing:-.02em}
+.proj-name em{font-style:italic;color:var(--red)}
+.proj-card:hover .proj-name em{color:#f48e7a}
+.proj-desc{font-size:13px;color:var(--ink-mid);line-height:1.85;margin-bottom:28px}
+.proj-stack{display:flex;flex-wrap:wrap;gap:8px}
+.proj-stack span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);padding:4px 10px;color:var(--ink-light);transition:all .3s}
+
+/* SKILLS */
+#skills .skills-body{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}
+.skill-col{padding:48px 56px;border-right:1px solid var(--rule)}
+.skill-col:last-child{border-right:none}
+.skill-cat{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:20px}
+.skill-list{list-style:none}
+.skill-list li{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--ink);line-height:1;padding:14px 0;border-bottom:1px solid var(--cream-dark);display:flex;align-items:center;justify-content:space-between;transition:padding-left .25s;cursor:default}
+.skill-list li:last-child{border-bottom:none}
+.skill-list li:hover{padding-left:8px;color:var(--red)}
+.skill-dot{width:6px;height:6px;border-radius:50%;background:var(--rule);flex-shrink:0;transition:background .2s,transform .2s}
+.skill-list li:hover .skill-dot{background:var(--red);transform:scale(1.4)}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--cream);padding:80px;display:grid;grid-template-columns:1fr auto;align-items:end}
+.footer-big{font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,90px);font-weight:900;letter-spacing:-.04em;line-height:.9}
+.footer-big em{font-style:italic;color:var(--gold)}
+.footer-sub{font-size:13px;color:rgba(244,239,228,.4);margin-top:24px;line-height:1.7}
+.footer-sub a{color:var(--gold);text-decoration:none}
+.footer-sub a:hover{text-decoration:underline}
+.footer-links{display:flex;flex-direction:column;gap:16px;align-items:flex-end}
+.footer-link{color:rgba(244,239,228,.45);text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s;display:flex;align-items:center;gap:8px}
+.footer-link:hover{color:var(--gold)}
+.footer-link::before{content:'→';opacity:0;transform:translateX(-8px);transition:all .2s}
+.footer-link:hover::before{opacity:1;transform:translateX(0)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.exp-item{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.exp-item.visible{opacity:1;transform:translateY(0)}
+.proj-card{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.proj-card.visible{opacity:1;transform:translateY(0)}
+.skill-col{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+.skill-col.visible{opacity:1;transform:translateY(0)}
+
+/* ── CREATIVE ──────────────────────────── */
+#creative{background:var(--ink);color:var(--cream)}
+#creative .section-header{border-color:rgba(200,191,168,.12)}
+#creative .section-title{color:var(--cream)}
+#creative .section-num{color:rgba(244,239,228,.3)}
+.running-head-dark{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(244,239,228,.3);
+  padding:12px 80px;border-bottom:1px solid rgba(200,191,168,.12);
+  display:flex;justify-content:space-between;
+  background:var(--ink);position:sticky;top:65px;z-index:50;
+}
+.photo-intro{
+  padding:48px 80px;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  border-bottom:1px solid rgba(200,191,168,.1);
+}
+.photo-intro-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.photo-intro-title{font-family:'Playfair Display',serif;font-size:36px;font-style:italic;font-weight:700;color:var(--cream);line-height:1.1;margin-bottom:20px}
+.photo-intro-text p{font-size:14px;color:rgba(244,239,228,.5);line-height:1.9;margin-bottom:14px}
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:380px 260px 380px 260px 380px 260px;
+  gap:4px;padding:4px;
+}
+.photo-cell{position:relative;overflow:hidden;cursor:pointer;background:rgba(255,255,255,.04)}
+.photo-cell.photo-feature{grid-column:span 2}
+.photo-cell:last-child{grid-column:span 2}
+.photo-cell img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.25,.46,.45,.94),filter .5s;filter:grayscale(20%) contrast(1.05) brightness(.95)}
+.photo-cell:hover img{transform:scale(1.05);filter:grayscale(0%) contrast(1) brightness(1)}
+.photo-cell-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,26,22,.75) 0%,transparent 55%);opacity:0;transition:opacity .35s;display:flex;align-items:flex-end;padding:20px}
+.photo-cell:hover .photo-cell-overlay{opacity:1}
+.photo-cell-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,228,.85)}
+.photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px dashed rgba(200,191,168,.12);transition:border-color .3s,background .3s}
+.photo-cell:hover .photo-placeholder{border-color:rgba(200,191,168,.3);background:rgba(255,255,255,.05)}
+.photo-placeholder-icon{font-size:26px;opacity:.25}
+.photo-placeholder-text{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,239,228,.2);text-align:center;line-height:1.7}
+
+#lightbox{position:fixed;inset:0;background:rgba(8,8,10,.96);z-index:5000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:88vh;object-fit:contain}
+#lightbox-close{position:absolute;top:28px;right:36px;font-size:28px;color:rgba(244,239,228,.45);cursor:pointer;transition:color .2s;background:none;border:none;font-family:inherit;line-height:1}
+#lightbox-close:hover{color:var(--cream)}
+#lightbox-caption{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,228,.35);white-space:nowrap}
+
+.music-section{
+  padding:72px 80px;
+  border-top:1px solid rgba(200,191,168,.1);
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;
+}
+.music-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.music-title{font-family:'Playfair Display',serif;font-size:36px;font-style:italic;font-weight:700;color:var(--cream);line-height:1.1;margin-bottom:20px}
+.music-desc{font-size:13px;color:rgba(244,239,228,.5);line-height:1.9;margin-bottom:32px}
+.music-meta{display:flex;flex-direction:column;gap:14px}
+.music-meta-item{font-size:12px;color:rgba(244,239,228,.35);letter-spacing:.06em;padding-left:14px;border-left:2px solid rgba(200,191,168,.12);line-height:1.6}
+.music-meta-item strong{display:block;color:rgba(244,239,228,.6);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+.music-player-wrap{display:flex;flex-direction:column;gap:0}
+.track{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid rgba(200,191,168,.08);cursor:pointer;transition:background .2s}
+.track:first-child{border-top:1px solid rgba(200,191,168,.08)}
+.track:hover{background:rgba(255,255,255,.03)}
+.track-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(200,191,168,.2);background:transparent;color:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;font-size:14px}
+.track-btn:hover,.track.playing .track-btn{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+.track-info{display:flex;flex-direction:column;gap:4px}
+.track-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--cream);font-style:italic}
+.track-progress{width:100%;height:2px;background:rgba(200,191,168,.1);border-radius:1px;overflow:hidden;margin-top:6px;cursor:pointer}
+.track-progress-bar{height:100%;width:0;background:var(--gold);border-radius:1px;transition:width .1s linear}
+.track-time{font-size:11px;letter-spacing:.08em;color:rgba(244,239,228,.3);font-variant-numeric:tabular-nums}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:18px 24px}.nav-links{display:none}
+  #hero{grid-template-columns:1fr}
+  .hero-left{padding:100px 24px 48px;border-right:none;border-bottom:1px solid var(--rule)}
+  .hero-issue{left:24px;top:70px}.hero-scroll{left:24px}
+  .hero-right{padding:48px 24px;min-height:300px}
+  .section-header{padding:40px 24px 24px;grid-template-columns:48px 1fr;gap:16px}
+  #about .about-body{grid-template-columns:1fr}
+  .about-col{padding:32px 24px;border-right:none;border-bottom:1px solid var(--rule)}
+  .about-sidebar{padding:32px 24px}
+  #experience .exp-body{padding:0 24px 48px}
+  .exp-item{grid-template-columns:1fr;gap:16px}
+  #projects .proj-grid{grid-template-columns:1fr}
+  .proj-card{border-right:none;padding:40px 24px}
+  #skills .skills-body{grid-template-columns:1fr!important}
+  .skill-col{border-right:none;border-bottom:1px solid var(--rule);padding:36px 24px}
+  .running-head-dark{padding:10px 24px}
+  .photo-intro{grid-template-columns:1fr;padding:32px 24px}
+  .photo-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .photo-cell{height:220px}
+  .photo-cell.photo-feature{grid-column:1/-1;height:320px}
+  .photo-cell:last-child{grid-column:1/-1}
+  .music-section{grid-template-columns:1fr;gap:40px;padding:48px 24px}
+
+  footer{padding:48px 24px;grid-template-columns:1fr;gap:40px}
+  .footer-links{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-wordmark">Hua<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#creative">Creative</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-issue">Vol. <span id="hero-year"></span> &nbsp;<span>·</span>&nbsp; Toronto, CA</div>
+    <h1 class="hero-headline">
+      AI<br>Engi<span class="italic">neer</span><br>&amp; Builder
+    </h1>
+    <p class="hero-sub">
+      Industrial Engineering student at University of Toronto.<br>
+      Building intelligent systems at the intersection of<br>
+      LLMs, cloud infrastructure, and automation.
+    </p>
+    <a href="#projects" class="hero-cta">View Work &nbsp;→</a>
+    <div class="hero-scroll">
+      <span class="hero-scroll-line"></span>
+      Scroll to explore
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-text">HUA</div>
+    <div class="hero-tag">AI × Engineering × Systems</div>
+    <div class="hero-details">
+      <div class="hero-detail-item">
+        <div class="hero-detail-label">Current Role</div>
+        <div class="hero-detail-value">AI App Engineer Intern @ Spark Growth</div>
+      </div>
+      <div class="hero-detail-item">
+        <div class="hero-detail-label">Education</div>
+        <div class="hero-detail-value">U of T Industrial Engineering + AI Minor</div>
+      </div>
+      <div class="hero-detail-item">
+        <div class="hero-detail-label">Graduation</div>
+        <div class="hero-detail-value">May 2027 · PEY Co-op</div>
+      </div>
+      <div class="hero-detail-item">
+        <div class="hero-detail-label">Languages</div>
+        <div class="hero-detail-value">English · 中文 · Français (en cours)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="running-head"><span>Profile — Hua Tan</span><span>AI Engineer &amp; Student · Toronto</span></div>
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About <em>Me</em></h2>
+  </div>
+  <div class="about-body">
+    <div class="about-col reveal">
+      <p>I'm an AI Application Engineer Intern at Spark Growth, a Toronto-based company driving social media growth and advertising for DTC brands. My work spans Claude API integration, Google Cloud Platform, Python automation, and full-stack data pipeline architecture.</p>
+      <div class="about-pull">"Building AI systems that are actually useful — not just impressive."</div>
+      <p>I believe the best technology disappears into the workflow. That philosophy drives how I design every system I build: minimal friction, maximum leverage.</p>
+    </div>
+    <div class="about-col reveal" style="transition-delay:.12s">
+      <p>At U of T, I'm studying Industrial Engineering with an AI minor — a combination that lets me think about systems holistically. Whether it's optimizing a database schema or designing an agentic workflow, I approach problems from both the engineering and the intelligence angle.</p>
+      <p>My deepest technical interests are in LLM-powered agents, RAG systems, and cloud-native architectures. I'm particularly fascinated by how memory and retrieval can make AI systems feel genuinely intelligent — not just reactive.</p>
+      <p>Outside of work: bilingual in English and Chinese, grinding a Duolingo French streak, and perpetually fine-tuning my Notion setup.</p>
+    </div>
+    <div class="about-sidebar reveal" style="transition-delay:.24s">
+      <div class="about-sidebar-label">Currently At</div>
+      <div class="about-sidebar-value">Spark Growth · Sept 2025</div>
+      <div class="about-sidebar-label">Core Stack</div>
+      <div class="tag-list">
+        <span class="tag">Claude API</span><span class="tag">Python</span>
+        <span class="tag">GCP</span><span class="tag">FastAPI</span>
+        <span class="tag">PyTorch</span><span class="tag">Docker</span>
+      </div>
+      <div class="about-sidebar-label" style="margin-top:28px">Coursework</div>
+      <div class="tag-list">
+        <span class="tag">ML / Deep Learning</span><span class="tag">NLP</span>
+        <span class="tag">Database Systems</span><span class="tag">Optimization</span>
+        <span class="tag">DSA</span>
+      </div>
+      <div class="about-sidebar-label" style="margin-top:28px">Location</div>
+      <div class="about-sidebar-value">Toronto, Ontario 🇨🇦</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div class="running-head"><span>Experience</span><span>Sept 2025 — Present</span></div>
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title"><em>Work</em> Experience</h2>
+  </div>
+  <div class="exp-body">
+    <div class="exp-item">
+      <div class="exp-date">
+        <strong>2025</strong>
+        Present · Toronto (Hybrid)
+      </div>
+      <div class="exp-main">
+        <div class="exp-role">AI Application Engineer Intern</div>
+        <div class="exp-company">Spark Growth</div>
+        <p class="exp-desc">Architected and deployed a production RAG system using the Claude API to parse meeting transcripts, extract action items via NLP, classify tasks by project category, and assign them in the CRM — processing 100+ meetings/week at 95% classification accuracy, saving 20+ hours/week of manual effort.<br><br>Built a webhook-driven automation pipeline integrating Calendly with Productive CRM on GCP Cloud Run, automating company/contact creation, deal generation with industry mapping, and duplicate detection — handling 50+ bookings/week end-to-end. Engineered 15+ Google Apps Script automations for cross-platform data sync, reducing manual reporting time by 45%.</p>
+      </div>
+      <div class="exp-meta">
+        <div class="exp-meta-item"><strong>Stack</strong>Python · FastAPI · Cloud Run · Claude API · OAuth 2.0 · GCP</div>
+        <div class="exp-meta-item"><strong>Impact</strong>20+ hrs/week saved · 95% classification accuracy · 45% reporting reduction</div>
+        <div class="exp-meta-item"><strong>Domain</strong>RAG · LLM Agents · Webhook Automation · Data Pipelines</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">
+        <strong>2022</strong>
+        Expected May 2027
+      </div>
+      <div class="exp-main">
+        <div class="exp-role">BASc Industrial Engineering + PEY Co-op</div>
+        <div class="exp-company">University of Toronto</div>
+        <p class="exp-desc">Pursuing a degree at the intersection of systems thinking and AI — with a minor in Artificial Intelligence &amp; Engineering Business. Coursework spans ML, Deep Learning, NLP, Database Systems, Operations Research, Optimization, and Data Structures &amp; Algorithms. Actively preparing for ML Engineer and LLM Application roles with a structured technical interview curriculum.</p>
+      </div>
+      <div class="exp-meta">
+        <div class="exp-meta-item"><strong>Minor</strong>Artificial Intelligence &amp; Engineering Business</div>
+        <div class="exp-meta-item"><strong>Key Courses</strong>ML · Deep Learning · NLP · Database Systems · Optimization · DSA</div>
+        <div class="exp-meta-item"><strong>Program</strong>PEY Co-op · Expected May 2027</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div class="running-head"><span>Projects</span><span>Selected Work</span></div>
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Selected <em>Projects</em></h2>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-num">Project 001 · Spark Growth · 2025</div>
+      <div class="proj-name">Creative <em>Intelligence</em> Agent</div>
+      <p class="proj-desc">Architected a full-stack LLM-powered analytics system enabling natural language querying of social media creative performance data (Instagram, Facebook, LinkedIn) for DTC brand clients. Built a normalized Cloud SQL schema for creative metrics, a FastAPI + Claude API tool-use backend, and explored Vertex AI vector embeddings for semantic retrieval and text-to-SQL latency optimization.</p>
+      <div class="proj-stack"><span>Claude API</span><span>FastAPI</span><span>Cloud SQL</span><span>Vertex AI</span><span>GCP</span><span>RAG</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 002 · Spark Growth · 2025</div>
+      <div class="proj-name">Calendly → CRM <em>Webhook</em> Pipeline</div>
+      <p class="proj-desc">Built a webhook-driven automation pipeline on GCP Cloud Run integrating Calendly with Productive CRM — automating company/contact creation, deal generation with industry mapping, and duplicate detection. Handles 50+ bookings/week end-to-end with zero manual intervention.</p>
+      <div class="proj-stack"><span>Python</span><span>Cloud Run</span><span>GCP</span><span>Webhooks</span><span>REST API</span><span>CRM</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 003 · Spark Growth · 2025</div>
+      <div class="proj-name">Multi-user Data <em>Export</em> App</div>
+      <p class="proj-desc">Developed a multi-user data export application on GCP Cloud Run with FastAPI, featuring Google OAuth 2.0 authentication, role-based access control, and seamless exports to Google Sheets and CSV — enabling the team to self-serve reporting without engineering support.</p>
+      <div class="proj-stack"><span>FastAPI</span><span>Cloud Run</span><span>GCP</span><span>OAuth 2.0</span><span>RBAC</span><span>Google Sheets</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 004 · Apr – May 2025</div>
+      <div class="proj-name">Fraud Detection <em>MLOps</em> Pipeline</div>
+      <p class="proj-desc">Designed and containerized a FastAPI microservice with MLflow-registered models for real-time and batch fraud inference. Orchestrated a multi-service architecture via Docker Compose, enabling rapid local simulation of production ML pipelines. Implemented model versioning and deployment registry following reproducible MLOps best practices.</p>
+      <div class="proj-stack"><span>Python</span><span>FastAPI</span><span>MLflow</span><span>Docker</span><span>Docker Compose</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 005 · Jan – Apr 2025</div>
+      <div class="proj-name">MBTI <em>Multimodal</em> Deep Learning</div>
+      <p class="proj-desc">Developed a hybrid BERT + CNN model for multimodal personality inference. Applied data augmentation and prompt tuning to address class imbalance. Reduced training time by 60% leveraging CUDA-enabled GPUs (RTX 5090) and optimized batch loading pipelines.</p>
+      <div class="proj-stack"><span>PyTorch</span><span>BERT</span><span>CNN</span><span>CUDA</span><span>Python</span><span>NLP</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 006 · Jan – Apr 2025</div>
+      <div class="proj-name">Course Enrollment <em>Platform</em></div>
+      <p class="proj-desc">Built a scalable SaaS-style platform supporting real-time enrollment for 500+ courses with a Java RESTful API and interactive frontend. Implemented RBAC for 3 user roles, enabled real-time availability via WebSockets (reducing booking conflicts by 40%), and optimized SQL queries by 45% through indexing and join restructuring.</p>
+      <div class="proj-stack"><span>Java</span><span>JavaScript</span><span>SQL</span><span>WebSockets</span><span>REST API</span><span>Agile</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 007 · Sep – Dec 2024</div>
+      <div class="proj-name">Resource Allocation <em>Optimizer</em></div>
+      <p class="proj-desc">Led a team to design a demand-driven scheduling system across multiple customer zones. Extracted spatial-temporal demand patterns and built forecasting models (Random Forest) with constrained optimization (cvxpy) to create order allocation plans under limited capacity — improving service level by 34%.</p>
+      <div class="proj-stack"><span>Python</span><span>Scikit-learn</span><span>cvxpy</span><span>Random Forest</span><span>Excel</span></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">Project 008 · Jan – Apr 2025</div>
+      <div class="proj-name">System Simulation &amp; <em>Capacity Planning</em></div>
+      <p class="proj-desc">Developed discrete-event simulations in SimPy to model system capacity, routing, and cycle times under fluctuating demand. Performed bottleneck analysis using Pandas/NumPy, and optimized resource allocation strategies with SciPy — reducing overall system operating cost by 60% through scenario-based planning.</p>
+      <div class="proj-stack"><span>Python</span><span>SimPy</span><span>SciPy</span><span>Pandas</span><span>NumPy</span><span>Excel Solver</span></div>
+    </div>
+  </div>
+</section>
+<div class="running-head"><span>Skills</span><span>Technical Expertise</span></div>
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Technical <em>Skills</em></h2>
+  </div>
+  <div class="skills-body" style="grid-template-columns:repeat(4,1fr)">
+    <div class="skill-col">
+      <div class="skill-cat">Languages</div>
+      <ul class="skill-list">
+        <li>Python <span class="skill-dot"></span></li>
+        <li>Java <span class="skill-dot"></span></li>
+        <li>SQL <span class="skill-dot"></span></li>
+        <li>JavaScript <span class="skill-dot"></span></li>
+        <li>Bash <span class="skill-dot"></span></li>
+        <li>Apps Script <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+    <div class="skill-col" style="transition-delay:.08s">
+      <div class="skill-cat">AI &amp; ML</div>
+      <ul class="skill-list">
+        <li>Claude API <span class="skill-dot"></span></li>
+        <li>RAG Systems <span class="skill-dot"></span></li>
+        <li>PyTorch <span class="skill-dot"></span></li>
+        <li>BERT / CNNs <span class="skill-dot"></span></li>
+        <li>Scikit-learn <span class="skill-dot"></span></li>
+        <li>MLflow <span class="skill-dot"></span></li>
+        <li>Kubeflow <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+    <div class="skill-col" style="transition-delay:.16s">
+      <div class="skill-cat">Frameworks</div>
+      <ul class="skill-list">
+        <li>FastAPI <span class="skill-dot"></span></li>
+        <li>Docker <span class="skill-dot"></span></li>
+        <li>REST APIs <span class="skill-dot"></span></li>
+        <li>OAuth 2.0 <span class="skill-dot"></span></li>
+        <li>WebSockets <span class="skill-dot"></span></li>
+        <li>Webhooks <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+    <div class="skill-col" style="transition-delay:.24s">
+      <div class="skill-cat">Cloud &amp; Infra</div>
+      <ul class="skill-list">
+        <li>GCP Cloud Run <span class="skill-dot"></span></li>
+        <li>Cloud SQL <span class="skill-dot"></span></li>
+        <li>Vertex AI <span class="skill-dot"></span></li>
+        <li>BigQuery <span class="skill-dot"></span></li>
+        <li>Linux <span class="skill-dot"></span></li>
+        <li>Git <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CREATIVE -->
+<div class="running-head-dark"><span>Creative Work</span><span>Photography &amp; Music</span></div>
+<section id="creative">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title"><em>Creative</em> Work</h2>
+  </div>
+
+  <!-- PHOTOGRAPHY -->
+  <div class="photo-intro">
+    <div>
+      <div class="photo-intro-label">Photography</div>
+      <div class="photo-intro-title">Moments &amp; Frames</div>
+    </div>
+    <div class="photo-intro-text">
+      <p>Beyond the terminal, I find myself drawn to the quiet geometry of everyday life — light on concrete, strangers mid-motion, the negative space between things.</p>
+      <p>Click any image to view full screen.</p>
+    </div>
+  </div>
+
+  <div class="photo-grid" id="photo-grid">
+    <!-- Row 1: cold dark opener — mountain layers + snow peak -->
+    <div class="photo-cell photo-feature" data-label="Mountain Layers" onclick="openLightbox(this)">
+      <img src="photo/photo-01.JPG" alt="Mountain Layers"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Mountain Layers</span></div>
+    </div>
+    <div class="photo-cell" data-label="Snow Peaks" onclick="openLightbox(this)">
+      <img src="photo/photo-10.JPG" alt="Snow Peaks"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Snow Peaks</span></div>
+    </div>
+    <!-- Row 2: cold series — glacier, ice, stone house -->
+    <div class="photo-cell" data-label="Glacier Lake" onclick="openLightbox(this)">
+      <img src="photo/photo-03.JPG" alt="Glacier Lake"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Glacier Lake</span></div>
+    </div>
+    <div class="photo-cell" data-label="Ice Wall" onclick="openLightbox(this)">
+      <img src="photo/photo-05.JPG" alt="Ice Wall"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Ice Wall</span></div>
+    </div>
+    <div class="photo-cell" data-label="Stone Shelter" onclick="openLightbox(this)">
+      <img src="photo/photo-11.JPG" alt="Stone Shelter"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Stone Shelter</span></div>
+    </div>
+    <!-- Row 3: green transition — hills + yaks by lake -->
+    <div class="photo-cell" data-label="Green Highlands" onclick="openLightbox(this)">
+      <img src="photo/photo-02.JPG" alt="Green Highlands"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Green Highlands</span></div>
+    </div>
+    <div class="photo-cell photo-feature" data-label="Yaks at Lakeside" onclick="openLightbox(this)">
+      <img src="photo/photo-09.JPG" alt="Yaks at Lakeside"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Yaks at Lakeside</span></div>
+    </div>
+    <!-- Row 4: warm earth/red — Potala night, red temple, monk stairs -->
+    <div class="photo-cell" data-label="Potala Palace" onclick="openLightbox(this)">
+      <img src="photo/photo-04.JPG" alt="Potala Palace"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Potala Palace</span></div>
+    </div>
+    <div class="photo-cell" data-label="Temple Murals" onclick="openLightbox(this)">
+      <img src="photo/photo-07.JPG" alt="Temple Murals"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Temple Murals</span></div>
+    </div>
+    <div class="photo-cell" data-label="Red Alley" onclick="openLightbox(this)">
+      <img src="photo/photo-08.JPG" alt="Red Alley"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Red Alley</span></div>
+    </div>
+    <!-- Row 5: special ending — glacier + prayer flags -->
+    <div class="photo-cell" data-label="Glacier Summit" onclick="openLightbox(this)">
+      <img src="photo/photo-14.JPG" alt="Glacier Summit"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Glacier Summit</span></div>
+    </div>
+    <div class="photo-cell photo-feature" data-label="Prayer Flags" onclick="openLightbox(this)">
+      <img src="photo/photo-13.JPG" alt="Prayer Flags"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Prayer Flags</span></div>
+    </div>
+    <!-- Row 6: closing — aurora + safari -->
+    <div class="photo-cell" data-label="Aurora Borealis" onclick="openLightbox(this)">
+      <img src="photo/photo-12.JPG" alt="Aurora Borealis"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Aurora Borealis</span></div>
+    </div>
+    <div class="photo-cell" data-label="Safari" onclick="openLightbox(this)">
+      <img src="photo/photo-06.JPG" alt="Safari"/>
+      <div class="photo-cell-overlay"><span class="photo-cell-label">Safari</span></div>
+    </div>
+  </div>
+
+  <!-- MUSIC -->
+  <div class="music-section">
+    <div>
+      <div class="music-label">Music</div>
+      <div class="music-title">Sounds &amp; Compositions</div>
+      <p class="music-desc">Music as a different kind of system design — where the constraints are time, tension, and texture rather than latency and throughput.</p>
+      <div class="music-meta">
+        <div class="music-meta-item">
+          <strong>Instrument</strong>
+          Guitar
+        </div>
+        <div class="music-meta-item">
+          <strong>Style</strong>
+          Fingerstyle · Classical · Covers
+        </div>
+      </div>
+    </div>
+    <div class="music-player-wrap">
+      <div class="track" data-src="music/outside-world.m4a">
+        <button class="track-btn">▶</button>
+        <div class="track-info">
+          <div class="track-name">外面的世界 · 前奏</div>
+          <div class="track-progress"><div class="track-progress-bar"></div></div>
+        </div>
+        <span class="track-time">0:00</span>
+      </div>
+      <div class="track" data-src="music/Solo.m4a">
+        <button class="track-btn">▶</button>
+        <div class="track-info">
+          <div class="track-name">海阔天空 · Solo</div>
+          <div class="track-progress"><div class="track-progress-bar"></div></div>
+        </div>
+        <span class="track-time">0:00</span>
+      </div>
+      <div class="track" data-src="music/pigeon.m4a">
+        <button class="track-btn">▶</button>
+        <div class="track-info">
+          <div class="track-name">鸽子</div>
+          <div class="track-progress"><div class="track-progress-bar"></div></div>
+        </div>
+        <span class="track-time">0:00</span>
+      </div>
+      <div class="track" data-src="music/canon.m4a">
+        <button class="track-btn">▶</button>
+        <div class="track-info">
+          <div class="track-name">卡农</div>
+          <div class="track-progress"><div class="track-progress-bar"></div></div>
+        </div>
+        <span class="track-time">0:00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt=""/>
+  <div id="lightbox-caption"></div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div>
+    <div class="footer-big">Let's<br><em>Connect</em></div>
+    <p class="footer-sub">
+      Open to ML Engineer and AI/LLM Application Engineer opportunities.<br>
+      Reach out at <a href="mailto:hua.tan@mail.utoronto.ca">hua.tan@mail.utoronto.ca</a>
+      &nbsp;·&nbsp; +1 (437) 986-7078
+    </p>
+  </div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/hua-tan-751b31224/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+    <a href="https://github.com/HuaTNA" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+    <a href="mailto:hua.tan@mail.utoronto.ca" class="footer-link">Email</a>
+  </div>
+</footer>
+
+<script>
+// YEAR
+document.getElementById('hero-year').textContent = new Date().getFullYear();
+
+// CURSOR
+const cur=document.getElementById('cur');
+const ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';cur.style.background='var(--gold)';ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='var(--gold)';ring.style.opacity='.2'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';cur.style.background='var(--red)';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='var(--red)';ring.style.opacity='.5'});
+});
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60)});
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.12});
+document.querySelectorAll('.reveal,.exp-item,.proj-card,.skill-col').forEach(el=>obs.observe(el));
+
+// STAGGER projects
+document.querySelectorAll('.proj-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s'});
+
+// LIGHTBOX
+function openLightbox(cell){
+  const img=cell.querySelector('img');
+  if(!img)return; // no-op if placeholder
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=img.src;
+  document.getElementById('lightbox-caption').textContent=cell.dataset.label||'';
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(e){
+  if(e&&e.target!==document.getElementById('lightbox')&&e.target.id!=='lightbox-close')return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox({target:document.getElementById('lightbox')})});
+
+// AUDIO PLAYER
+(function(){
+  const audio=new Audio();
+  audio.preload='auto';
+  let activeTrack=null;
+  function fmt(s){s=Math.floor(s||0);const m=Math.floor(s/60);return m+':'+(''+(s%60)).padStart(2,'0')}
+  function play(tr){
+    const btn=tr.querySelector('.track-btn');
+    if(activeTrack===tr){
+      if(audio.paused){audio.play().catch(e=>console.error('Play error:',e));btn.textContent='❚❚';tr.classList.add('playing')}
+      else{audio.pause();btn.textContent='▶';tr.classList.remove('playing')}
+      return;
+    }
+    if(activeTrack){
+      activeTrack.querySelector('.track-btn').textContent='▶';
+      activeTrack.classList.remove('playing');
+      activeTrack.querySelector('.track-progress-bar').style.width='0';
+    }
+    activeTrack=tr;
+    audio.src=tr.dataset.src;
+    audio.load();
+    audio.addEventListener('canplay',function oncan(){
+      audio.removeEventListener('canplay',oncan);
+      audio.play().then(()=>{
+        btn.textContent='❚❚';tr.classList.add('playing');
+      }).catch(e=>console.error('Play error:',e));
+    });
+  }
+  document.querySelectorAll('.track').forEach(tr=>{
+    tr.querySelector('.track-btn').addEventListener('click',()=>play(tr));
+    tr.querySelector('.track-progress').addEventListener('click',e=>{
+      if(activeTrack!==tr||!audio.duration)return;
+      audio.currentTime=audio.duration*(e.offsetX/e.currentTarget.offsetWidth);
+    });
+    // preload duration
+    const tmp=new Audio();
+    tmp.preload='metadata';
+    tmp.src=tr.dataset.src;
+    tmp.addEventListener('loadedmetadata',()=>{
+      tr.querySelector('.track-time').textContent=fmt(tmp.duration);
+      tr.dataset.duration=tmp.duration;
+    });
+  });
+  audio.addEventListener('timeupdate',()=>{
+    if(!activeTrack)return;
+    activeTrack.querySelector('.track-progress-bar').style.width=(audio.currentTime/audio.duration*100)+'%';
+    activeTrack.querySelector('.track-time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
+  });
+  audio.addEventListener('error',()=>{
+    console.error('Audio error:',audio.error,audio.src);
+    if(activeTrack)activeTrack.querySelector('.track-name').style.color='#C94040';
+  });
+  audio.addEventListener('ended',()=>{
+    if(!activeTrack)return;
+    activeTrack.querySelector('.track-btn').textContent='▶';activeTrack.classList.remove('playing');
+    activeTrack.querySelector('.track-progress-bar').style.width='0';
+    activeTrack.querySelector('.track-time').textContent=fmt(activeTrack.dataset.duration||0);
+    const tracks=[...document.querySelectorAll('.track')];
+    const idx=tracks.indexOf(activeTrack);
+    activeTrack=null;
+    if(idx<tracks.length-1)play(tracks[idx+1]);
+  });
+})();
+</script>
+</body>
+</html>
