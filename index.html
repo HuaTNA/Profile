@@ -1,784 +1,798 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Hua — AI Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --cream:#F4EFE4;--cream-dark:#EAE3D4;--ink:#1C1A16;
-  --ink-mid:#3D3A32;--ink-light:#7A7568;--rule:#C8BFA8;
-  --red:#9B2B2B;--red-light:#C94040;--gold:#B8923A;
-}
-html{scroll-behavior:smooth}
-body{background:var(--cream);color:var(--ink);font-family:'DM Mono',monospace;overflow-x:hidden;cursor:none}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11110f">
+  <meta name="description" content="Hua Tan builds LLM applications, retrieval systems, and cloud automation. Explore projects, engineering experience, photography, and guitar recordings from Toronto.">
+  <meta property="og:title" content="Hua Tan — AI Application Engineer">
+  <meta property="og:description" content="LLM applications, retrieval systems, and cloud automation. Selected work by Hua Tan, an AI application engineer and University of Toronto student.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.huatan.site/">
+  <link rel="canonical" href="https://www.huatan.site/">
+  <title>Hua Tan — AI Application Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f3efe5;
+      --paper-2: #e9e2d4;
+      --ink: #171714;
+      --muted: #6e6b63;
+      --line: rgba(23,23,20,.16);
+      --accent: #a0382e;
+      --gold: #c5a15a;
+      --max: 1240px;
+    }
 
-/* CURSOR */
-#cur{position:fixed;width:8px;height:8px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s}
-#cur-ring{position:fixed;width:32px;height:32px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .25s ease;opacity:.5}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Manrope", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+    ::selection { background: var(--accent); color: var(--paper); }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
-nav.scrolled{background:rgba(244,239,228,.92);backdrop-filter:blur(12px);border-color:var(--rule)}
-.nav-wordmark{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
-.nav-wordmark em{color:var(--red);font-style:italic}
-.nav-links{display:flex;gap:36px;list-style:none}
-.nav-links a{color:var(--ink-light);text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--red);transition:width .25s ease}
-.nav-links a:hover{color:var(--ink)}
-.nav-links a:hover::after{width:100%}
+    .mono {
+      font-family: "DM Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-size: .75rem;
+    }
+    .serif { font-family: "Playfair Display", serif; }
+    .eyebrow { color: var(--accent); font-weight: 500; }
+    .wrap { width: min(calc(100% - 64px), var(--max)); margin: 0 auto; }
+    .skip-link { position: fixed; left: 16px; top: -60px; z-index: 1000; background: var(--ink); color: white; padding: 12px 16px; }
+    .skip-link:focus { top: 16px; }
 
-/* HERO */
-#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule);overflow:hidden;position:relative}
-.hero-left{padding:140px 60px 80px 80px;display:flex;flex-direction:column;justify-content:flex-end;border-right:1px solid var(--rule);position:relative}
-.hero-issue{position:absolute;top:100px;left:80px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light)}
-.hero-issue span{color:var(--red)}
-.hero-headline{font-family:'Playfair Display',serif;font-size:clamp(64px,8vw,108px);font-weight:900;line-height:.92;letter-spacing:-.04em;color:var(--ink);margin-bottom:32px}
-.hero-headline .italic{font-style:italic;color:var(--red)}
-.hero-sub{font-size:12px;letter-spacing:.06em;color:var(--ink-light);line-height:1.9;max-width:380px;margin-bottom:48px}
-.hero-cta{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--cream);text-decoration:none;padding:14px 28px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;transition:background .2s,gap .2s;width:fit-content}
-.hero-cta:hover{background:var(--red);gap:20px}
-.hero-scroll{position:absolute;bottom:40px;left:80px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:12px}
-.hero-scroll-line{width:48px;height:1px;background:var(--rule);animation:scrollline 2s ease-in-out infinite}
-@keyframes scrollline{0%,100%{width:48px;opacity:.4}50%{width:72px;opacity:1}}
+    nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      transition: background .25s, border-color .25s;
+    }
+    nav.scrolled { background: rgba(243,239,229,.92); backdrop-filter: blur(14px); border-color: var(--line); }
+    .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .wordmark { font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 700; text-decoration: none; }
+    .wordmark i { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { text-decoration: none; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+    .nav-status { display: flex; align-items: center; gap: 9px; }
+    .menu-toggle { display: none; min-height: 44px; padding: 8px 14px; font: inherit; font-size: .875rem; color: var(--ink); background: transparent; border: 1px solid var(--line); cursor: pointer; }
 
-.hero-right{padding:140px 80px 80px 60px;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);position:relative;overflow:hidden}
-.hero-bg-text{position:absolute;font-family:'Playfair Display',serif;font-size:clamp(120px,18vw,280px);font-weight:900;color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-.05em}
-.hero-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,228,.35);align-self:flex-end}
-.hero-details{display:flex;flex-direction:column;gap:32px}
-.hero-detail-item{border-top:1px solid rgba(200,191,168,.15);padding-top:20px}
-.hero-detail-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,228,.3);margin-bottom:6px}
-.hero-detail-value{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);font-style:italic}
+    .hero { min-height: min(860px, 100svh); padding-top: 72px; border-bottom: 1px solid var(--line); display: grid; align-items: stretch; }
+    .hero-grid { display: grid; grid-template-columns: 1.45fr .75fr; }
+    .hero-main { padding: 110px 7vw 90px max(32px, calc((100vw - var(--max)) / 2)); display: flex; flex-direction: column; justify-content: center; }
+    .hero h1 { margin: 28px 0 20px; font-family: "Playfair Display", serif; font-size: clamp(4.5rem, 7.6vw, 7.5rem); letter-spacing: -.055em; line-height: 1.08; font-weight: 700; }
+    .hero h1 em { color: var(--accent); font-weight: 600; }
+    .hero-role { margin: 0 0 26px; font-size: clamp(1.35rem, 2.1vw, 1.85rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.4; }
+    .hero-copy { max-width: 32rem; font-size: clamp(1rem, 1.3vw, 1.125rem); color: #55524b; margin: 0 0 38px; line-height: 1.8; }
+    .hero-main .actions { align-items: center; gap: 26px; }
+    .hero-github { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; font-size: .875rem; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 6px; }
+    .hero-github:hover { color: var(--accent); text-decoration-color: currentColor; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button { min-height: 50px; padding: 0 22px; border: 1px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 14px; text-decoration: none; font-family: "DM Mono", monospace; text-transform: uppercase; letter-spacing: .07em; font-size: .875rem; transition: .2s; }
+    .button.primary { background: var(--ink); color: var(--paper); }
+    .button:hover, .button:focus-visible { transform: translateY(-2px); background: var(--accent); border-color: var(--accent); color: white; }
+    .hero-side { background: var(--ink); color: var(--paper); padding: 48px max(32px, calc((100vw - var(--max)) / 2)) 48px 46px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .hero-portrait { width: min(100%, 280px); margin: 0 0 28px; }
+    .hero-portrait img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+    .profile-facts { min-width: 0; }
+    .signal { position: relative; border-top: 1px solid rgba(255,255,255,.15); padding: 16px 0; }
+    .signal:last-child { border-bottom: 1px solid rgba(255,255,255,.15); }
+    .signal-label { color: #b6b3aa; margin-bottom: 7px; }
+    .signal-value { font-family: "Playfair Display", serif; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.45; }
+    .signal-value em { color: var(--gold); }
 
-/* LOAD ANIMATION */
-.hero-left .hero-issue,.hero-left .hero-headline,.hero-left .hero-sub,.hero-left .hero-cta,.hero-right .hero-tag,.hero-right .hero-details{opacity:0;transform:translateY(28px);animation:fadeUp .8s ease forwards}
-.hero-left .hero-issue{animation-delay:.1s}
-.hero-left .hero-headline{animation-delay:.25s}
-.hero-left .hero-sub{animation-delay:.4s}
-.hero-left .hero-cta{animation-delay:.55s}
-.hero-right .hero-tag{animation-delay:.35s}
-.hero-right .hero-details{animation-delay:.5s}
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    .proof { background: var(--paper-2); border-bottom: 1px solid var(--line); }
+    .proof-context { margin: 0 auto; padding-top: 24px; color: #55534c; }
+    .proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .proof-item { padding: 30px 28px; border-right: 1px solid var(--line); }
+    .proof-item:first-child { padding-left: 0; }
+    .proof-item:last-child { border-right: 0; }
+    .proof-number { font-family: "Playfair Display", serif; font-size: clamp(2rem, 4vw, 3.7rem); line-height: 1; margin-bottom: 8px; }
+    .proof-label { color: #55534c; font-size: .875rem; }
 
-/* RUNNING HEADER */
-.running-head{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);padding:12px 80px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;background:var(--cream);position:sticky;top:65px;z-index:50}
+    section, .skills, footer { scroll-margin-top: 72px; }
+    .anchor-alias { display: block; height: 0; scroll-margin-top: 72px; }
+    .section { padding: 110px 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 160px 1fr; gap: 32px; align-items: start; margin-bottom: 48px; }
+    .section-title { margin: 0; font-family: "Playfair Display", serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.08; letter-spacing: -.04em; }
+    .section-title em { color: var(--accent); }
+    .section-intro { max-width: 700px; margin: 22px 0 0; color: var(--muted); font-size: 1rem; }
 
-/* SECTION BASE */
-.section-header{display:grid;grid-template-columns:80px 1fr;align-items:baseline;padding:60px 80px 40px;border-bottom:1px solid var(--rule);gap:32px}
-.section-num{font-size:11px;letter-spacing:.12em;color:var(--ink-light);padding-top:4px}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em}
-.section-title em{font-style:italic;color:var(--red)}
+    .projects { display: grid; grid-template-columns: 1.25fr .75fr; border: 1px solid var(--line); }
+    .project { min-height: 440px; padding: 42px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; position: relative; overflow: hidden; border-bottom: 1px solid var(--line); transition: background .3s, color .3s; }
+    .project:nth-child(odd) { border-right: 1px solid var(--line); }
+    .project:nth-last-child(-n+2) { border-bottom: 0; }
+    .project.featured { background: var(--ink); color: var(--paper); }
+    a.project:hover, a.project:focus-visible { background: var(--accent); color: white; }
+    a.project:focus-visible { outline: 3px solid var(--ink); outline-offset: 5px; z-index: 1; }
+    .project-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .project-kicker { color: currentColor; opacity: .8; }
+    .project-arrow { font-size: 1.45rem; transition: transform .25s; }
+    .project:hover .project-arrow { transform: translate(5px,-5px); }
+    .project-name { max-width: 700px; margin: 36px 0 20px; font-family: "Playfair Display", serif; font-size: clamp(2rem, 3.5vw, 3.5rem); line-height: 1.12; letter-spacing: -.035em; }
+    .project:nth-child(even) .project-name { font-size: clamp(2rem, 3vw, 3rem); }
+    .project-desc { max-width: 680px; margin: 0 0 24px; color: currentColor; opacity: .88; line-height: 1.7; }
+    .project-detail { margin: 0 0 28px; font-size: .875rem; line-height: 1.7; }
+    .project-link { display: block; margin-top: 26px; font-size: .875rem; text-underline-offset: 5px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { border: 1px solid currentColor; opacity: .85; padding: 6px 10px; font-family: "DM Mono", monospace; letter-spacing: .02em; font-size: .75rem; }
+    .archive { margin-top: 56px; border-top: 1px solid var(--line); }
+    .archive-head { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 28px 0; cursor: pointer; list-style: none; }
+    .archive-head::-webkit-details-marker { display: none; }
+    .archive-head::after { content: "+"; font-size: 1.8rem; color: var(--accent); }
+    .archive[open] .archive-head::after { content: "−"; }
+    .archive-title { margin: 0; font-family: "Playfair Display", serif; font-size: clamp(1.9rem, 4vw, 3rem); }
+    .archive-note { color: var(--muted); margin: 0 0 0 auto; max-width: 440px; }
+    .archive-list { border-bottom: 1px solid var(--line); }
+    .archive-item { display: grid; grid-template-columns: 72px 1.1fr 1.4fr auto; gap: 26px; align-items: center; min-height: 104px; padding: 22px 0; border-top: 1px solid var(--line); text-decoration: none; }
+    .archive-item:hover .archive-name, .archive-item:focus-visible .archive-name { color: var(--accent); }
+    .archive-index, .archive-year { color: var(--muted); }
+    .archive-name { font-family: "Playfair Display", serif; font-size: 1.35rem; transition: color .2s; }
+    .archive-desc { color: var(--muted); font-size: .88rem; }
+    .archive-arrow { color: var(--accent); }
 
-/* ABOUT */
-#about .about-body{display:grid;grid-template-columns:1fr 1fr 300px;min-height:420px}
-.about-col{padding:48px 56px;border-right:1px solid var(--rule)}
-.about-col:last-child{border-right:none}
-.about-col p{font-size:14px;line-height:1.9;color:var(--ink-mid);margin-bottom:20px}
-.about-col p:first-child::first-letter{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;float:left;line-height:.8;margin-right:8px;margin-top:6px;color:var(--red)}
-.about-pull{font-family:'Playfair Display',serif;font-size:21px;font-style:italic;font-weight:400;line-height:1.45;color:var(--ink);border-left:3px solid var(--red);padding-left:24px;margin:32px 0}
-.about-sidebar{padding:48px 36px;background:var(--ink);color:var(--cream)}
-.about-sidebar-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,239,228,.4);margin-bottom:8px}
-.about-sidebar-value{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:28px;color:var(--cream)}
-.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(200,191,168,.25);color:rgba(244,239,228,.6)}
+    .experience { display: grid; grid-template-columns: 220px 1fr; gap: 58px; padding: 54px 0; border-top: 1px solid var(--line); }
+    .experience:last-child { border-bottom: 1px solid var(--line); }
+    .experience-date { color: var(--muted); }
+    .experience-role { margin: 0; font-family: "Playfair Display", serif; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.12; }
+    .experience-company { color: var(--accent); margin: 10px 0 26px; }
+    .experience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; }
+    .experience-copy { margin: 0; color: #45423b; }
+    .impact-list { margin: 0; padding: 0; list-style: none; }
+    .impact-list li { padding: 12px 0; border-top: 1px solid var(--line); display: flex; gap: 16px; }
+    .impact-list li::before { content: "↳"; color: var(--accent); }
+    .exp-details { margin-top: 30px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .exp-details summary { padding: 15px 0; cursor: pointer; color: var(--accent); list-style: none; display: flex; justify-content: space-between; }
+    .exp-details summary::-webkit-details-marker { display: none; }
+    .exp-details summary::after { content: "+"; font-size: 1.1rem; }
+    .exp-details[open] summary::after { content: "−"; }
+    .exp-detail-body { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 4px 0 24px; color: var(--muted); font-size: .9rem; }
+    .exp-detail-body p { margin: 0; }
+    .experience-overview { max-width: 65ch; margin: 0; color: #45423b; }
+    .experience-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 32px 0; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .experience-metrics div { display: flex; flex-direction: column; }
+    .experience-metrics dt { margin-top: 8px; color: var(--muted); font-size: .875rem; line-height: 1.5; }
+    .experience-metrics dd { order: -1; margin: 0; font-family: "Playfair Display", serif; font-size: clamp(1.9rem, 3vw, 2.8rem); line-height: 1.1; }
+    .experience-scope { margin: 32px 0 16px; font-size: 1rem; font-weight: 600; }
+    .work-area { border-bottom: 1px solid var(--line); }
+    .work-area:first-child { border-top: 1px solid var(--line); }
+    .work-area summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; cursor: pointer; list-style: none; }
+    .work-area summary::-webkit-details-marker { display: none; }
+    .work-area summary::after { content: "+"; color: var(--accent); font-size: 1.5rem; flex-shrink: 0; }
+    .work-area[open] summary::after { content: "−"; }
+    .work-area h5 { margin: 0; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+    .work-area ul { display: grid; gap: 12px; margin: 0; padding: 0 8px 24px 20px; color: #45423b; }
+    .work-area li { padding-left: 4px; }
+    .work-area li::marker { color: var(--accent); }
+    .experience-stack { margin: 28px 0 0; font-size: .875rem; line-height: 1.85; color: #55524b; }
+    .experience-stack strong { color: var(--ink); }
 
-/* EXPERIENCE */
-#experience .exp-body{padding:0 80px 80px}
-.exp-item{display:grid;grid-template-columns:200px 1fr 1fr;gap:40px;padding:48px 0;border-bottom:1px solid var(--rule)}
-.exp-date{font-size:12px;color:var(--ink-light);letter-spacing:.06em;line-height:1.8;padding-top:4px}
-.exp-date strong{display:block;font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-bottom:8px}
-.exp-role{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px}
-.exp-company{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:20px}
-.exp-desc{font-size:13px;color:var(--ink-mid);line-height:1.85}
-.exp-meta-item{font-size:12px;color:var(--ink-light);border-left:2px solid var(--rule);padding-left:16px;margin-bottom:16px;line-height:1.6}
-.exp-meta-item strong{display:block;color:var(--ink);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+    .about-grid { display: grid; grid-template-columns: 1.15fr .85fr; border: 1px solid var(--line); }
+    .about-copy { padding: 52px; border-right: 1px solid var(--line); }
+    .about-lede { margin: 0 0 28px; font-family: "Playfair Display", serif; font-size: clamp(1.7rem, 3vw, 2.8rem); line-height: 1.35; }
+    .about-copy p:last-child { margin-bottom: 0; color: var(--muted); }
+    .skills { background: var(--ink); color: var(--paper); padding: 52px; }
+    .skill-group + .skill-group { margin-top: 34px; }
+    .skill-label { color: var(--gold); margin-bottom: 13px; }
+    .skill-cloud { display: flex; flex-wrap: wrap; gap: 9px; }
+    .skill { border: 1px solid rgba(255,255,255,.2); padding: 8px 11px; font-size: .85rem; }
 
-/* PROJECTS */
-#projects .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
-.proj-card{padding:52px 60px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);position:relative;overflow:hidden}
-.proj-card:nth-child(even){border-right:none}
-.proj-card::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .45s cubic-bezier(.76,0,.24,1);z-index:0}
-.proj-card:hover::before{transform:translateY(0)}
-.proj-card>*{position:relative;z-index:1;transition:color .3s}
-.proj-card:hover .proj-num,.proj-card:hover .proj-name,.proj-card:hover .proj-desc{color:var(--cream)!important}
-.proj-card:hover .proj-stack span{border-color:rgba(244,239,228,.2);color:rgba(244,239,228,.6)}
-.proj-num{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:24px}
-.proj-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1.15;margin-bottom:16px;letter-spacing:-.02em}
-.proj-name em{font-style:italic;color:var(--red)}
-.proj-card:hover .proj-name em{color:#f48e7a}
-.proj-desc{font-size:13px;color:var(--ink-mid);line-height:1.85;margin-bottom:28px}
-.proj-stack{display:flex;flex-wrap:wrap;gap:8px}
-.proj-stack span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);padding:4px 10px;color:var(--ink-light);transition:all .3s}
+    .creative { background: var(--ink); color: var(--paper); }
+    .creative .section-head { margin-bottom: 48px; }
+    .creative .section-intro { color: #b6b3aa; }
+    .creative .eyebrow { color: var(--gold); }
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 6px; }
+    .photo { margin: 0; overflow: hidden; position: relative; background: #272722; }
+    .photo button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+    .photo button:focus-visible { outline: 3px solid var(--gold); outline-offset: -5px; }
+    .photo:nth-child(1), .photo:nth-child(8) { grid-column: span 2; grid-row: span 2; }
+    .photo:nth-child(6), .photo:nth-child(12) { grid-column: span 2; }
+    .photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.74) contrast(1.04); transition: transform .7s, filter .4s; }
+    .photo:hover img { transform: scale(1.035); filter: saturate(1); }
+    .photo span { position: absolute; left: 0; right: 0; bottom: 0; padding: 32px 16px 14px; color: white; background: linear-gradient(transparent, rgba(0,0,0,.7)); pointer-events: none; }
+    .creative-note { display: flex; justify-content: space-between; gap: 32px; margin-top: 28px; color: #b6b3aa; }
+    .creative-note p { margin: 0; max-width: 620px; }
+    .track-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .track-links button { color: var(--paper); background: transparent; border: 1px solid rgba(255,255,255,.4); min-height: 44px; padding: 10px 14px; cursor: pointer; font: inherit; font-size: .875rem; }
+    .track-links button:hover { border-color: var(--gold); color: var(--gold); }
+    .track-links button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+    .music-player { width: min(100%, 540px); margin-top: 16px; display: block; }
+    .music-player[hidden] { display: none; }
+    .audio-status { min-height: 1.6em; margin: 12px 0 0; font-size: .875rem; color: #b6b3aa; }
+    .lightbox { padding: 60px 24px 24px; border: 0; width: min(1000px, calc(100% - 32px)); max-width: none; max-height: 94svh; color: var(--paper); background: #171714; }
+    .lightbox::backdrop { background: rgba(0,0,0,.88); }
+    .lightbox img { max-height: 72svh; max-width: 100%; object-fit: contain; margin: 0 auto; }
+    .lightbox p { margin-bottom: 0; text-align: center; }
+    .lightbox-close { position: absolute; top: 10px; right: 14px; min-height: 44px; padding: 8px 12px; color: inherit; border: 1px solid #777; background: transparent; font: inherit; cursor: pointer; }
 
-/* SKILLS */
-#skills .skills-body{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}
-.skill-col{padding:48px 56px;border-right:1px solid var(--rule)}
-.skill-col:last-child{border-right:none}
-.skill-cat{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:20px}
-.skill-list{list-style:none}
-.skill-list li{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--ink);line-height:1;padding:14px 0;border-bottom:1px solid var(--cream-dark);display:flex;align-items:center;justify-content:space-between;transition:padding-left .25s;cursor:default}
-.skill-list li:last-child{border-bottom:none}
-.skill-list li:hover{padding-left:8px;color:var(--red)}
-.skill-dot{width:6px;height:6px;border-radius:50%;background:var(--rule);flex-shrink:0;transition:background .2s,transform .2s}
-.skill-list li:hover .skill-dot{background:var(--red);transform:scale(1.4)}
+    footer { padding: 110px 0 40px; background: var(--accent); color: white; }
+    .footer-grid { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 60px; }
+    .footer-title { margin: 0; font-family: "Playfair Display", serif; font-size: clamp(3rem, 8vw, 7rem); line-height: 1.02; letter-spacing: -.05em; }
+    .footer-title em { color: #f4d59b; }
+    .footer-copy { max-width: 600px; margin: 34px 0 0; font-size: 1.05rem; color: white; }
+    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+    .footer-links a { text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.4); }
+    .footer-meta { display: flex; justify-content: space-between; gap: 30px; padding-top: 80px; color: #f3ded9; }
+    footer a:focus-visible { outline-color: white; }
 
-/* FOOTER */
-footer{background:var(--ink);color:var(--cream);padding:80px;display:grid;grid-template-columns:1fr auto;align-items:end}
-.footer-big{font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,90px);font-weight:900;letter-spacing:-.04em;line-height:.9}
-.footer-big em{font-style:italic;color:var(--gold)}
-.footer-sub{font-size:13px;color:rgba(244,239,228,.4);margin-top:24px;line-height:1.7}
-.footer-sub a{color:var(--gold);text-decoration:none}
-.footer-sub a:hover{text-decoration:underline}
-.footer-links{display:flex;flex-direction:column;gap:16px;align-items:flex-end}
-.footer-link{color:rgba(244,239,228,.45);text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s;display:flex;align-items:center;gap:8px}
-.footer-link:hover{color:var(--gold)}
-.footer-link::before{content:'→';opacity:0;transform:translateX(-8px);transition:all .2s}
-.footer-link:hover::before{opacity:1;transform:translateX(0)}
+    .reveal { opacity: 1; }
+    .reveal.pending { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.exp-item{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.exp-item.visible{opacity:1;transform:translateY(0)}
-.proj-card{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
-.proj-card.visible{opacity:1;transform:translateY(0)}
-.skill-col{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
-.skill-col.visible{opacity:1;transform:translateY(0)}
+    @media (max-width: 900px) {
+      .wrap { width: min(calc(100% - 40px), var(--max)); }
+      .nav-inner { position: relative; }
+      .nav-status { margin-left: auto; margin-right: 20px; }
+      .menu-toggle { display: block; }
+      .nav-links { display: none; position: absolute; left: -20px; right: -20px; top: 72px; padding: 16px 20px; gap: 0; background: var(--paper); border-bottom: 1px solid var(--line); box-shadow: 0 12px 24px rgba(0,0,0,.08); }
+      .nav-links.open { display: flex; flex-direction: column; align-items: stretch; }
+      .nav-links a { display: block; padding: 12px 4px; font-size: .875rem; }
+      .hero-grid, .projects, .experience-grid, .about-grid, .footer-grid { grid-template-columns: 1fr; }
+      .hero-main { min-height: 68svh; padding: 88px 24px 76px; }
+      .hero-side { padding: 48px 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+      .hero-portrait { margin: 0; }
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+      .proof-item { border-bottom: 1px solid var(--line); padding: 24px 0; }
+      .proof-item:nth-child(even) { padding-left: 22px; border-right: 0; }
+      .section { padding: 76px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 14px; }
+      .project, .project:nth-child(odd) { border: 0; border-bottom: 1px solid var(--line); min-height: 390px; padding: 30px; }
+      .project:last-child { border-bottom: 0; }
+      .archive-item { grid-template-columns: 54px 1fr auto; gap: 16px; }
+      .archive-desc { grid-column: 2 / 4; padding-bottom: 6px; }
+      .archive-year { display: none; }
+      .archive-head { flex-wrap: wrap; }
+      .archive-note { order: 3; width: 100%; margin: 0; }
+      .experience { grid-template-columns: 1fr; gap: 24px; }
+      .exp-detail-body { grid-template-columns: 1fr; }
+      .about-copy, .skills { padding: 32px; }
+      .about-copy { border-right: 0; border-bottom: 1px solid var(--line); }
+      .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 220px; }
+      .photo:nth-child(1), .photo:nth-child(8) { grid-column: span 2; grid-row: span 2; }
+      .photo:nth-child(6), .photo:nth-child(12) { grid-column: span 1; }
+      .creative-note { flex-direction: column; }
+      .footer-links { align-items: flex-start; }
+    }
 
-/* ── CREATIVE ──────────────────────────── */
-#creative{background:var(--ink);color:var(--cream)}
-#creative .section-header{border-color:rgba(200,191,168,.12)}
-#creative .section-title{color:var(--cream)}
-#creative .section-num{color:rgba(244,239,228,.3)}
-.running-head-dark{
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(244,239,228,.3);
-  padding:12px 80px;border-bottom:1px solid rgba(200,191,168,.12);
-  display:flex;justify-content:space-between;
-  background:var(--ink);position:sticky;top:65px;z-index:50;
-}
-.photo-intro{
-  padding:48px 80px;
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;
-  border-bottom:1px solid rgba(200,191,168,.1);
-}
-.photo-intro-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.photo-intro-title{font-family:'Playfair Display',serif;font-size:36px;font-style:italic;font-weight:700;color:var(--cream);line-height:1.1;margin-bottom:20px}
-.photo-intro-text p{font-size:14px;color:rgba(244,239,228,.5);line-height:1.9;margin-bottom:14px}
+    @media (max-width: 560px) {
+      .nav-status { display: none; }
+      .hero h1 { font-size: clamp(3.6rem, 17vw, 5rem); }
+      .hero-side { grid-template-columns: 1fr; }
+      .hero-portrait { width: min(100%, 280px); margin: 0 auto; }
+      .experience-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
+      .proof-item, .proof-item:nth-child(even) { padding: 22px 12px 22px 0; border-right: 0; }
+      .proof-item:nth-child(even) { padding-left: 12px; }
+      .project, .project:nth-child(odd), .about-copy, .skills { padding: 24px; }
+      .project-name { margin-top: 40px; }
+      .gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+      .photo, .photo:nth-child(1), .photo:nth-child(8) { width: 82vw; height: 360px; flex: 0 0 auto; scroll-snap-align: center; }
+      .footer-meta { flex-direction: column; padding-top: 60px; }
+    }
 
-.photo-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:380px 260px 380px 260px 380px 260px;
-  gap:4px;padding:4px;
-}
-.photo-cell{position:relative;overflow:hidden;cursor:pointer;background:rgba(255,255,255,.04)}
-.photo-cell.photo-feature{grid-column:span 2}
-.photo-cell:last-child{grid-column:span 2}
-.photo-cell img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.25,.46,.45,.94),filter .5s;filter:grayscale(20%) contrast(1.05) brightness(.95)}
-.photo-cell:hover img{transform:scale(1.05);filter:grayscale(0%) contrast(1) brightness(1)}
-.photo-cell-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,26,22,.75) 0%,transparent 55%);opacity:0;transition:opacity .35s;display:flex;align-items:flex-end;padding:20px}
-.photo-cell:hover .photo-cell-overlay{opacity:1}
-.photo-cell-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,228,.85)}
-.photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px dashed rgba(200,191,168,.12);transition:border-color .3s,background .3s}
-.photo-cell:hover .photo-placeholder{border-color:rgba(200,191,168,.3);background:rgba(255,255,255,.05)}
-.photo-placeholder-icon{font-size:26px;opacity:.25}
-.photo-placeholder-text{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,239,228,.2);text-align:center;line-height:1.7}
-
-#lightbox{position:fixed;inset:0;background:rgba(8,8,10,.96);z-index:5000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-#lightbox.open{display:flex}
-#lightbox img{max-width:90vw;max-height:88vh;object-fit:contain}
-#lightbox-close{position:absolute;top:28px;right:36px;font-size:28px;color:rgba(244,239,228,.45);cursor:pointer;transition:color .2s;background:none;border:none;font-family:inherit;line-height:1}
-#lightbox-close:hover{color:var(--cream)}
-#lightbox-caption{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,228,.35);white-space:nowrap}
-
-.music-section{
-  padding:72px 80px;
-  border-top:1px solid rgba(200,191,168,.1);
-  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;
-}
-.music-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.music-title{font-family:'Playfair Display',serif;font-size:36px;font-style:italic;font-weight:700;color:var(--cream);line-height:1.1;margin-bottom:20px}
-.music-desc{font-size:13px;color:rgba(244,239,228,.5);line-height:1.9;margin-bottom:32px}
-.music-meta{display:flex;flex-direction:column;gap:14px}
-.music-meta-item{font-size:12px;color:rgba(244,239,228,.35);letter-spacing:.06em;padding-left:14px;border-left:2px solid rgba(200,191,168,.12);line-height:1.6}
-.music-meta-item strong{display:block;color:rgba(244,239,228,.6);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
-.music-player-wrap{display:flex;flex-direction:column;gap:0}
-.track{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid rgba(200,191,168,.08);cursor:pointer;transition:background .2s}
-.track:first-child{border-top:1px solid rgba(200,191,168,.08)}
-.track:hover{background:rgba(255,255,255,.03)}
-.track-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(200,191,168,.2);background:transparent;color:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;font-size:14px}
-.track-btn:hover,.track.playing .track-btn{border-color:var(--gold);background:var(--gold);color:var(--ink)}
-.track-info{display:flex;flex-direction:column;gap:4px}
-.track-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--cream);font-style:italic}
-.track-progress{width:100%;height:2px;background:rgba(200,191,168,.1);border-radius:1px;overflow:hidden;margin-top:6px;cursor:pointer}
-.track-progress-bar{height:100%;width:0;background:var(--gold);border-radius:1px;transition:width .1s linear}
-.track-time{font-size:11px;letter-spacing:.08em;color:rgba(244,239,228,.3);font-variant-numeric:tabular-nums}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  nav{padding:18px 24px}.nav-links{display:none}
-  #hero{grid-template-columns:1fr}
-  .hero-left{padding:100px 24px 48px;border-right:none;border-bottom:1px solid var(--rule)}
-  .hero-issue{left:24px;top:70px}.hero-scroll{left:24px}
-  .hero-right{padding:48px 24px;min-height:300px}
-  .section-header{padding:40px 24px 24px;grid-template-columns:48px 1fr;gap:16px}
-  #about .about-body{grid-template-columns:1fr}
-  .about-col{padding:32px 24px;border-right:none;border-bottom:1px solid var(--rule)}
-  .about-sidebar{padding:32px 24px}
-  #experience .exp-body{padding:0 24px 48px}
-  .exp-item{grid-template-columns:1fr;gap:16px}
-  #projects .proj-grid{grid-template-columns:1fr}
-  .proj-card{border-right:none;padding:40px 24px}
-  #skills .skills-body{grid-template-columns:1fr!important}
-  .skill-col{border-right:none;border-bottom:1px solid var(--rule);padding:36px 24px}
-  .running-head-dark{padding:10px 24px}
-  .photo-intro{grid-template-columns:1fr;padding:32px 24px}
-  .photo-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
-  .photo-cell{height:220px}
-  .photo-cell.photo-feature{grid-column:1/-1;height:320px}
-  .photo-cell:last-child{grid-column:1/-1}
-  .music-section{grid-template-columns:1fr;gap:40px;padding:48px 24px}
-
-  footer{padding:48px 24px;grid-template-columns:1fr;gap:40px}
-  .footer-links{align-items:flex-start}
-}
-</style>
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal, .reveal.pending { opacity: 1; transform: none; }
+    }
+  </style>
+  <noscript><style>@media (max-width: 900px) { .nav-links { display: flex; position: static; flex-wrap: wrap; padding: 8px 0; box-shadow: none; border: 0; } .nav-inner { height: auto; min-height: 72px; flex-wrap: wrap; } .nav-links a { padding: 8px; } .menu-toggle, .nav-status { display: none; } }</style></noscript>
 </head>
 <body>
-
-<div id="cur"></div>
-<div id="cur-ring"></div>
-
-<!-- NAV -->
-<nav id="nav">
-  <a href="#hero" class="nav-wordmark">Hua<em>.</em></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#creative">Creative</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-left">
-    <div class="hero-issue">Vol. <span id="hero-year"></span> &nbsp;<span>·</span>&nbsp; Toronto, CA</div>
-    <h1 class="hero-headline">
-      AI<br>Engi<span class="italic">neer</span><br>&amp; Builder
-    </h1>
-    <p class="hero-sub">
-      Industrial Engineering student at University of Toronto.<br>
-      Building intelligent systems at the intersection of<br>
-      LLMs, cloud infrastructure, and automation.
-    </p>
-    <a href="#projects" class="hero-cta">View Work &nbsp;→</a>
-    <div class="hero-scroll">
-      <span class="hero-scroll-line"></span>
-      Scroll to explore
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-bg-text">HUA</div>
-    <div class="hero-tag">AI × Engineering × Systems</div>
-    <div class="hero-details">
-      <div class="hero-detail-item">
-        <div class="hero-detail-label">Current Role</div>
-        <div class="hero-detail-value">AI App Engineer Intern @ Spark Growth</div>
-      </div>
-      <div class="hero-detail-item">
-        <div class="hero-detail-label">Education</div>
-        <div class="hero-detail-value">U of T Industrial Engineering + AI Minor</div>
-      </div>
-      <div class="hero-detail-item">
-        <div class="hero-detail-label">Graduation</div>
-        <div class="hero-detail-value">May 2027 · PEY Co-op</div>
-      </div>
-      <div class="hero-detail-item">
-        <div class="hero-detail-label">Languages</div>
-        <div class="hero-detail-value">English · 中文 · Français (en cours)</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<div class="running-head"><span>Profile — Hua Tan</span><span>AI Engineer &amp; Student · Toronto</span></div>
-<section id="about">
-  <div class="section-header reveal">
-    <span class="section-num">01</span>
-    <h2 class="section-title">About <em>Me</em></h2>
-  </div>
-  <div class="about-body">
-    <div class="about-col reveal">
-      <p>I'm an AI Application Engineer Intern at Spark Growth, a Toronto-based company driving social media growth and advertising for DTC brands. My work spans Claude API integration, Google Cloud Platform, Python automation, and full-stack data pipeline architecture.</p>
-      <div class="about-pull">"Building AI systems that are actually useful — not just impressive."</div>
-      <p>I believe the best technology disappears into the workflow. That philosophy drives how I design every system I build: minimal friction, maximum leverage.</p>
-    </div>
-    <div class="about-col reveal" style="transition-delay:.12s">
-      <p>At U of T, I'm studying Industrial Engineering with an AI minor — a combination that lets me think about systems holistically. Whether it's optimizing a database schema or designing an agentic workflow, I approach problems from both the engineering and the intelligence angle.</p>
-      <p>My deepest technical interests are in LLM-powered agents, RAG systems, and cloud-native architectures. I'm particularly fascinated by how memory and retrieval can make AI systems feel genuinely intelligent — not just reactive.</p>
-      <p>Outside of work: bilingual in English and Chinese, grinding a Duolingo French streak, and perpetually fine-tuning my Notion setup.</p>
-    </div>
-    <div class="about-sidebar reveal" style="transition-delay:.24s">
-      <div class="about-sidebar-label">Currently At</div>
-      <div class="about-sidebar-value">Spark Growth · Sept 2025</div>
-      <div class="about-sidebar-label">Core Stack</div>
-      <div class="tag-list">
-        <span class="tag">Claude API</span><span class="tag">Python</span>
-        <span class="tag">GCP</span><span class="tag">FastAPI</span>
-        <span class="tag">PyTorch</span><span class="tag">Docker</span>
-      </div>
-      <div class="about-sidebar-label" style="margin-top:28px">Coursework</div>
-      <div class="tag-list">
-        <span class="tag">ML / Deep Learning</span><span class="tag">NLP</span>
-        <span class="tag">Database Systems</span><span class="tag">Optimization</span>
-        <span class="tag">DSA</span>
-      </div>
-      <div class="about-sidebar-label" style="margin-top:28px">Location</div>
-      <div class="about-sidebar-value">Toronto, Ontario 🇨🇦</div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<div class="running-head"><span>Experience</span><span>Sept 2025 — Present</span></div>
-<section id="experience">
-  <div class="section-header reveal">
-    <span class="section-num">02</span>
-    <h2 class="section-title"><em>Work</em> Experience</h2>
-  </div>
-  <div class="exp-body">
-    <div class="exp-item">
-      <div class="exp-date">
-        <strong>2025</strong>
-        Present · Toronto (Hybrid)
-      </div>
-      <div class="exp-main">
-        <div class="exp-role">AI Application Engineer Intern</div>
-        <div class="exp-company">Spark Growth</div>
-        <p class="exp-desc">Architected and deployed a production RAG system using the Claude API to parse meeting transcripts, extract action items via NLP, classify tasks by project category, and assign them in the CRM — processing 100+ meetings/week at 95% classification accuracy, saving 20+ hours/week of manual effort.<br><br>Built a webhook-driven automation pipeline integrating Calendly with Productive CRM on GCP Cloud Run, automating company/contact creation, deal generation with industry mapping, and duplicate detection — handling 50+ bookings/week end-to-end. Engineered 15+ Google Apps Script automations for cross-platform data sync, reducing manual reporting time by 45%.</p>
-      </div>
-      <div class="exp-meta">
-        <div class="exp-meta-item"><strong>Stack</strong>Python · FastAPI · Cloud Run · Claude API · OAuth 2.0 · GCP</div>
-        <div class="exp-meta-item"><strong>Impact</strong>20+ hrs/week saved · 95% classification accuracy · 45% reporting reduction</div>
-        <div class="exp-meta-item"><strong>Domain</strong>RAG · LLM Agents · Webhook Automation · Data Pipelines</div>
-      </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-date">
-        <strong>2022</strong>
-        Expected May 2027
-      </div>
-      <div class="exp-main">
-        <div class="exp-role">BASc Industrial Engineering + PEY Co-op</div>
-        <div class="exp-company">University of Toronto</div>
-        <p class="exp-desc">Pursuing a degree at the intersection of systems thinking and AI — with a minor in Artificial Intelligence &amp; Engineering Business. Coursework spans ML, Deep Learning, NLP, Database Systems, Operations Research, Optimization, and Data Structures &amp; Algorithms. Actively preparing for ML Engineer and LLM Application roles with a structured technical interview curriculum.</p>
-      </div>
-      <div class="exp-meta">
-        <div class="exp-meta-item"><strong>Minor</strong>Artificial Intelligence &amp; Engineering Business</div>
-        <div class="exp-meta-item"><strong>Key Courses</strong>ML · Deep Learning · NLP · Database Systems · Optimization · DSA</div>
-        <div class="exp-meta-item"><strong>Program</strong>PEY Co-op · Expected May 2027</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<div class="running-head"><span>Projects</span><span>Selected Work</span></div>
-<section id="projects">
-  <div class="section-header reveal">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Selected <em>Projects</em></h2>
-  </div>
-  <div class="proj-grid">
-    <div class="proj-card">
-      <div class="proj-num">Project 001 · Spark Growth · 2025</div>
-      <div class="proj-name">Creative <em>Intelligence</em> Agent</div>
-      <p class="proj-desc">Architected a full-stack LLM-powered analytics system enabling natural language querying of social media creative performance data (Instagram, Facebook, LinkedIn) for DTC brand clients. Built a normalized Cloud SQL schema for creative metrics, a FastAPI + Claude API tool-use backend, and explored Vertex AI vector embeddings for semantic retrieval and text-to-SQL latency optimization.</p>
-      <div class="proj-stack"><span>Claude API</span><span>FastAPI</span><span>Cloud SQL</span><span>Vertex AI</span><span>GCP</span><span>RAG</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 002 · Spark Growth · 2025</div>
-      <div class="proj-name">Calendly → CRM <em>Webhook</em> Pipeline</div>
-      <p class="proj-desc">Built a webhook-driven automation pipeline on GCP Cloud Run integrating Calendly with Productive CRM — automating company/contact creation, deal generation with industry mapping, and duplicate detection. Handles 50+ bookings/week end-to-end with zero manual intervention.</p>
-      <div class="proj-stack"><span>Python</span><span>Cloud Run</span><span>GCP</span><span>Webhooks</span><span>REST API</span><span>CRM</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 003 · Spark Growth · 2025</div>
-      <div class="proj-name">Multi-user Data <em>Export</em> App</div>
-      <p class="proj-desc">Developed a multi-user data export application on GCP Cloud Run with FastAPI, featuring Google OAuth 2.0 authentication, role-based access control, and seamless exports to Google Sheets and CSV — enabling the team to self-serve reporting without engineering support.</p>
-      <div class="proj-stack"><span>FastAPI</span><span>Cloud Run</span><span>GCP</span><span>OAuth 2.0</span><span>RBAC</span><span>Google Sheets</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 004 · Apr – May 2025</div>
-      <div class="proj-name">Fraud Detection <em>MLOps</em> Pipeline</div>
-      <p class="proj-desc">Designed and containerized a FastAPI microservice with MLflow-registered models for real-time and batch fraud inference. Orchestrated a multi-service architecture via Docker Compose, enabling rapid local simulation of production ML pipelines. Implemented model versioning and deployment registry following reproducible MLOps best practices.</p>
-      <div class="proj-stack"><span>Python</span><span>FastAPI</span><span>MLflow</span><span>Docker</span><span>Docker Compose</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 005 · Jan – Apr 2025</div>
-      <div class="proj-name">MBTI <em>Multimodal</em> Deep Learning</div>
-      <p class="proj-desc">Developed a hybrid BERT + CNN model for multimodal personality inference. Applied data augmentation and prompt tuning to address class imbalance. Reduced training time by 60% leveraging CUDA-enabled GPUs (RTX 5090) and optimized batch loading pipelines.</p>
-      <div class="proj-stack"><span>PyTorch</span><span>BERT</span><span>CNN</span><span>CUDA</span><span>Python</span><span>NLP</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 006 · Jan – Apr 2025</div>
-      <div class="proj-name">Course Enrollment <em>Platform</em></div>
-      <p class="proj-desc">Built a scalable SaaS-style platform supporting real-time enrollment for 500+ courses with a Java RESTful API and interactive frontend. Implemented RBAC for 3 user roles, enabled real-time availability via WebSockets (reducing booking conflicts by 40%), and optimized SQL queries by 45% through indexing and join restructuring.</p>
-      <div class="proj-stack"><span>Java</span><span>JavaScript</span><span>SQL</span><span>WebSockets</span><span>REST API</span><span>Agile</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 007 · Sep – Dec 2024</div>
-      <div class="proj-name">Resource Allocation <em>Optimizer</em></div>
-      <p class="proj-desc">Led a team to design a demand-driven scheduling system across multiple customer zones. Extracted spatial-temporal demand patterns and built forecasting models (Random Forest) with constrained optimization (cvxpy) to create order allocation plans under limited capacity — improving service level by 34%.</p>
-      <div class="proj-stack"><span>Python</span><span>Scikit-learn</span><span>cvxpy</span><span>Random Forest</span><span>Excel</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-num">Project 008 · Jan – Apr 2025</div>
-      <div class="proj-name">System Simulation &amp; <em>Capacity Planning</em></div>
-      <p class="proj-desc">Developed discrete-event simulations in SimPy to model system capacity, routing, and cycle times under fluctuating demand. Performed bottleneck analysis using Pandas/NumPy, and optimized resource allocation strategies with SciPy — reducing overall system operating cost by 60% through scenario-based planning.</p>
-      <div class="proj-stack"><span>Python</span><span>SimPy</span><span>SciPy</span><span>Pandas</span><span>NumPy</span><span>Excel Solver</span></div>
-    </div>
-  </div>
-</section>
-<div class="running-head"><span>Skills</span><span>Technical Expertise</span></div>
-<section id="skills">
-  <div class="section-header reveal">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Technical <em>Skills</em></h2>
-  </div>
-  <div class="skills-body" style="grid-template-columns:repeat(4,1fr)">
-    <div class="skill-col">
-      <div class="skill-cat">Languages</div>
-      <ul class="skill-list">
-        <li>Python <span class="skill-dot"></span></li>
-        <li>Java <span class="skill-dot"></span></li>
-        <li>SQL <span class="skill-dot"></span></li>
-        <li>JavaScript <span class="skill-dot"></span></li>
-        <li>Bash <span class="skill-dot"></span></li>
-        <li>Apps Script <span class="skill-dot"></span></li>
+  <a class="skip-link mono" href="#main">Skip to content</a>
+  <nav id="nav" aria-label="Primary navigation">
+    <div class="nav-inner wrap">
+      <a class="wordmark" href="#top" aria-label="Hua Tan, home">Hua<i>.</i></a>
+      <ul class="nav-links mono" id="nav-links">
+        <li><a href="#work">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#creative">Creative</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
+      <div class="nav-status mono">Toronto, Canada</div>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
     </div>
-    <div class="skill-col" style="transition-delay:.08s">
-      <div class="skill-cat">AI &amp; ML</div>
-      <ul class="skill-list">
-        <li>Claude API <span class="skill-dot"></span></li>
-        <li>RAG Systems <span class="skill-dot"></span></li>
-        <li>PyTorch <span class="skill-dot"></span></li>
-        <li>BERT / CNNs <span class="skill-dot"></span></li>
-        <li>Scikit-learn <span class="skill-dot"></span></li>
-        <li>MLflow <span class="skill-dot"></span></li>
-        <li>Kubeflow <span class="skill-dot"></span></li>
-      </ul>
-    </div>
-    <div class="skill-col" style="transition-delay:.16s">
-      <div class="skill-cat">Frameworks</div>
-      <ul class="skill-list">
-        <li>FastAPI <span class="skill-dot"></span></li>
-        <li>Docker <span class="skill-dot"></span></li>
-        <li>REST APIs <span class="skill-dot"></span></li>
-        <li>OAuth 2.0 <span class="skill-dot"></span></li>
-        <li>WebSockets <span class="skill-dot"></span></li>
-        <li>Webhooks <span class="skill-dot"></span></li>
-      </ul>
-    </div>
-    <div class="skill-col" style="transition-delay:.24s">
-      <div class="skill-cat">Cloud &amp; Infra</div>
-      <ul class="skill-list">
-        <li>GCP Cloud Run <span class="skill-dot"></span></li>
-        <li>Cloud SQL <span class="skill-dot"></span></li>
-        <li>Vertex AI <span class="skill-dot"></span></li>
-        <li>BigQuery <span class="skill-dot"></span></li>
-        <li>Linux <span class="skill-dot"></span></li>
-        <li>Git <span class="skill-dot"></span></li>
-      </ul>
-    </div>
-  </div>
-</section>
+  </nav>
 
-<!-- CREATIVE -->
-<div class="running-head-dark"><span>Creative Work</span><span>Photography &amp; Music</span></div>
-<section id="creative">
-  <div class="section-header reveal">
-    <span class="section-num">05</span>
-    <h2 class="section-title"><em>Creative</em> Work</h2>
-  </div>
-
-  <!-- PHOTOGRAPHY -->
-  <div class="photo-intro">
-    <div>
-      <div class="photo-intro-label">Photography</div>
-      <div class="photo-intro-title">Moments &amp; Frames</div>
-    </div>
-    <div class="photo-intro-text">
-      <p>Beyond the terminal, I find myself drawn to the quiet geometry of everyday life — light on concrete, strangers mid-motion, the negative space between things.</p>
-      <p>Click any image to view full screen.</p>
-    </div>
-  </div>
-
-  <div class="photo-grid" id="photo-grid">
-    <!-- Row 1: cold dark opener — mountain layers + snow peak -->
-    <div class="photo-cell photo-feature" data-label="Mountain Layers" onclick="openLightbox(this)">
-      <img src="photo/photo-01.JPG" alt="Mountain Layers"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Mountain Layers</span></div>
-    </div>
-    <div class="photo-cell" data-label="Snow Peaks" onclick="openLightbox(this)">
-      <img src="photo/photo-10.JPG" alt="Snow Peaks"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Snow Peaks</span></div>
-    </div>
-    <!-- Row 2: cold series — glacier, ice, stone house -->
-    <div class="photo-cell" data-label="Glacier Lake" onclick="openLightbox(this)">
-      <img src="photo/photo-03.JPG" alt="Glacier Lake"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Glacier Lake</span></div>
-    </div>
-    <div class="photo-cell" data-label="Ice Wall" onclick="openLightbox(this)">
-      <img src="photo/photo-05.JPG" alt="Ice Wall"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Ice Wall</span></div>
-    </div>
-    <div class="photo-cell" data-label="Stone Shelter" onclick="openLightbox(this)">
-      <img src="photo/photo-11.JPG" alt="Stone Shelter"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Stone Shelter</span></div>
-    </div>
-    <!-- Row 3: green transition — hills + yaks by lake -->
-    <div class="photo-cell" data-label="Green Highlands" onclick="openLightbox(this)">
-      <img src="photo/photo-02.JPG" alt="Green Highlands"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Green Highlands</span></div>
-    </div>
-    <div class="photo-cell photo-feature" data-label="Yaks at Lakeside" onclick="openLightbox(this)">
-      <img src="photo/photo-09.JPG" alt="Yaks at Lakeside"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Yaks at Lakeside</span></div>
-    </div>
-    <!-- Row 4: warm earth/red — Potala night, red temple, monk stairs -->
-    <div class="photo-cell" data-label="Potala Palace" onclick="openLightbox(this)">
-      <img src="photo/photo-04.JPG" alt="Potala Palace"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Potala Palace</span></div>
-    </div>
-    <div class="photo-cell" data-label="Temple Murals" onclick="openLightbox(this)">
-      <img src="photo/photo-07.JPG" alt="Temple Murals"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Temple Murals</span></div>
-    </div>
-    <div class="photo-cell" data-label="Red Alley" onclick="openLightbox(this)">
-      <img src="photo/photo-08.JPG" alt="Red Alley"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Red Alley</span></div>
-    </div>
-    <!-- Row 5: special ending — glacier + prayer flags -->
-    <div class="photo-cell" data-label="Glacier Summit" onclick="openLightbox(this)">
-      <img src="photo/photo-14.JPG" alt="Glacier Summit"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Glacier Summit</span></div>
-    </div>
-    <div class="photo-cell photo-feature" data-label="Prayer Flags" onclick="openLightbox(this)">
-      <img src="photo/photo-13.JPG" alt="Prayer Flags"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Prayer Flags</span></div>
-    </div>
-    <!-- Row 6: closing — aurora + safari -->
-    <div class="photo-cell" data-label="Aurora Borealis" onclick="openLightbox(this)">
-      <img src="photo/photo-12.JPG" alt="Aurora Borealis"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Aurora Borealis</span></div>
-    </div>
-    <div class="photo-cell" data-label="Safari" onclick="openLightbox(this)">
-      <img src="photo/photo-06.JPG" alt="Safari"/>
-      <div class="photo-cell-overlay"><span class="photo-cell-label">Safari</span></div>
-    </div>
-  </div>
-
-  <!-- MUSIC -->
-  <div class="music-section">
-    <div>
-      <div class="music-label">Music</div>
-      <div class="music-title">Sounds &amp; Compositions</div>
-      <p class="music-desc">Music as a different kind of system design — where the constraints are time, tension, and texture rather than latency and throughput.</p>
-      <div class="music-meta">
-        <div class="music-meta-item">
-          <strong>Instrument</strong>
-          Guitar
+  <main id="main">
+    <span class="anchor-alias" id="hero" aria-hidden="true"></span>
+    <header class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="mono eyebrow">AI engineering · Toronto</div>
+          <h1>Hua <em>Tan.</em></h1>
+          <p class="hero-role">AI engineer & builder.</p>
+          <p class="hero-copy">I build LLM applications, retrieval systems, and cloud automation. My background in Industrial Engineering shapes how I connect software, data, and the people using them.</p>
+          <div class="actions">
+            <a class="button primary" href="#work">View projects <span aria-hidden="true">↓</span></a>
+            <a class="hero-github" href="https://github.com/HuaTNA" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
-        <div class="music-meta-item">
-          <strong>Style</strong>
-          Fingerstyle · Classical · Covers
-        </div>
+        <aside class="hero-side" aria-label="Profile summary">
+          <figure class="hero-portrait">
+            <img src="assets/hua-tan-portrait.png" alt="Portrait of Hua Tan" width="400" height="400" decoding="async" fetchpriority="high">
+          </figure>
+          <div class="profile-facts">
+          <div class="signal">
+            <div class="signal-label mono">Recent experience</div>
+            <div class="signal-value">AI Application Engineer Intern<br><em>Spark Growth</em></div>
+          </div>
+          <div class="signal">
+            <div class="signal-label mono">Focus</div>
+            <div class="signal-value">LLM applications · Retrieval<br>APIs & cloud automation</div>
+          </div>
+          <div class="signal">
+            <div class="signal-label mono">Education</div>
+            <div class="signal-value">Industrial Engineering + AI<br><em>University of Toronto · Expected May 2027</em></div>
+          </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <div class="proof" aria-label="Selected impact metrics">
+      <p class="proof-context wrap mono">Selected results · Spark Growth</p>
+      <div class="proof-grid wrap">
+        <div class="proof-item"><div class="proof-number">20+</div><div class="proof-label">hours saved per week on meeting follow-up</div></div>
+        <div class="proof-item"><div class="proof-number">95%</div><div class="proof-label">project classification accuracy for meeting tasks</div></div>
+        <div class="proof-item"><div class="proof-number">100+</div><div class="proof-label">meeting transcripts processed per week</div></div>
+        <div class="proof-item"><div class="proof-number">45%</div><div class="proof-label">less time spent on manual reporting</div></div>
       </div>
     </div>
-    <div class="music-player-wrap">
-      <div class="track" data-src="music/outside-world.m4a">
-        <button class="track-btn">▶</button>
-        <div class="track-info">
-          <div class="track-name">外面的世界 · 前奏</div>
-          <div class="track-progress"><div class="track-progress-bar"></div></div>
+
+    <span class="anchor-alias" id="projects" aria-hidden="true"></span>
+    <section class="section" id="work">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="mono eyebrow">01 · Selected work</div>
+          <div>
+            <h2 class="section-title">Selected <em>projects.</em></h2>
+            <p class="section-intro">Personal applications, work at Spark Growth, and experiments in retrieval and machine learning.</p>
+          </div>
         </div>
-        <span class="track-time">0:00</span>
-      </div>
-      <div class="track" data-src="music/Solo.m4a">
-        <button class="track-btn">▶</button>
-        <div class="track-info">
-          <div class="track-name">海阔天空 · Solo</div>
-          <div class="track-progress"><div class="track-progress-bar"></div></div>
+        <div class="projects reveal">
+          <a class="project featured" href="https://github.com/HuaTNA/Auto-Resume" target="_blank" rel="noopener">
+            <div class="project-top"><span class="project-kicker mono">01 · Personal project</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <div>
+              <h3 class="project-name">Career Workspace</h3>
+              <p class="project-desc">A workspace for tailoring job applications from a structured personal profile. Its career workflow matches experience to a job description, drafts a resume and cover letter, and exports the documents as PDFs.</p>
+              <p class="project-detail"><strong>Built:</strong> A Next.js interface and FastAPI backend connecting evidence retrieval, document generation, and iterative keyword and relevance scoring.</p>
+              <div class="tags"><span class="tag">Next.js</span><span class="tag">FastAPI</span><span class="tag">Claude API</span><span class="tag">Supabase</span><span class="tag">LaTeX</span></div>
+              <span class="project-link">View code on GitHub ↗</span>
+            </div>
+          </a>
+          <a class="project" href="https://github.com/HuaTNA/healthcare_ai" target="_blank" rel="noopener">
+            <div class="project-top"><span class="project-kicker mono">02 · Learning application · 2026</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <div>
+              <h3 class="project-name">Clinical Tutor</h3>
+              <p class="project-desc">An AI tutor for practicing clinical reasoning with 2,000 de-identified ICU cases. It reveals case details gradually and guides learners through questions and feedback grounded in case evidence.</p>
+              <p class="project-detail"><strong>Built:</strong> Case retrieval combining a knowledge graph and semantic search, with a guided teaching workflow.</p>
+              <div class="tags"><span class="tag">RAG</span><span class="tag">NetworkX</span><span class="tag">ChromaDB</span><span class="tag">MIMIC-III</span></div>
+              <span class="project-link">View code on GitHub ↗</span>
+            </div>
+          </a>
+          <article class="project">
+            <div class="project-top"><span class="project-kicker mono">03 · Spark Growth · Internal tool</span></div>
+            <div>
+              <h3 class="project-name">Creative Intelligence Agent</h3>
+              <p class="project-desc">A tool for asking questions about creative performance across Instagram, Facebook, and LinkedIn. It connects natural-language questions to structured campaign data for DTC brands.</p>
+              <p class="project-detail"><strong>Built:</strong> A normalized Cloud SQL schema and a FastAPI backend with Claude tool use. Explored embeddings for semantic retrieval.</p>
+              <div class="tags"><span class="tag">Claude API</span><span class="tag">FastAPI</span><span class="tag">Cloud SQL</span><span class="tag">GCP</span></div>
+              <a class="project-link" href="#experience">More about my work at Spark Growth ↓</a>
+            </div>
+          </article>
+          <a class="project featured" href="https://github.com/HuaTNA/fraud-detection-mlops" target="_blank" rel="noopener">
+            <div class="project-top"><span class="project-kicker mono">04 · ML systems</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <div>
+              <h3 class="project-name">Fraud Detection MLOps</h3>
+              <p class="project-desc">A fraud detection project that connects model tracking to real-time and batch predictions. The services run together locally to make the training-to-inference workflow reproducible.</p>
+              <p class="project-detail"><strong>Built:</strong> A FastAPI inference service, MLflow model registry, and containerized services orchestrated with Docker Compose.</p>
+              <div class="tags"><span class="tag">Python</span><span class="tag">MLflow</span><span class="tag">Kafka</span><span class="tag">Docker</span></div>
+              <span class="project-link">View code on GitHub ↗</span>
+            </div>
+          </a>
         </div>
-        <span class="track-time">0:00</span>
+        <details class="archive reveal">
+          <summary class="archive-head">
+            <span class="archive-title">More projects</span>
+            <span class="archive-note">7 projects in automation, ML, optimization, and music.</span>
+          </summary>
+          <div class="archive-list">
+            <div class="archive-item">
+              <span class="archive-index mono">05</span>
+              <span class="archive-name">Calendly → CRM Pipeline</span>
+              <span class="archive-desc">Webhook automation for company and contact creation, deal generation, industry mapping, and duplicate detection across 50+ weekly bookings.</span>
+              <span class="archive-year mono">2025</span>
+            </div>
+            <div class="archive-item">
+              <span class="archive-index mono">06</span>
+              <span class="archive-name">Multi-user Data Export App</span>
+              <span class="archive-desc">FastAPI application with Google OAuth, role-based access, and self-serve exports to Google Sheets and CSV.</span>
+              <span class="archive-year mono">2025</span>
+            </div>
+            <a class="archive-item" href="https://github.com/HuaTNA/MBTI-Prediction-" target="_blank" rel="noopener">
+              <span class="archive-index mono">07</span>
+              <span class="archive-name">Multimodal MBTI Prediction</span>
+              <span class="archive-desc">Hybrid BERT + CNN personality inference with class-balancing, prompt tuning, and CUDA-optimized training.</span>
+              <span class="archive-arrow" aria-hidden="true">↗</span>
+            </a>
+            <div class="archive-item">
+              <span class="archive-index mono">08</span>
+              <span class="archive-name">Course Enrollment Platform</span>
+              <span class="archive-desc">Java SaaS-style platform for 500+ courses with WebSockets, three-role RBAC, and SQL query optimization.</span>
+              <span class="archive-year mono">2025</span>
+            </div>
+            <div class="archive-item">
+              <span class="archive-index mono">09</span>
+              <span class="archive-name">Resource Allocation Optimizer</span>
+              <span class="archive-desc">Demand forecasting and constrained optimization across customer zones, improving modeled service level by 34%.</span>
+              <span class="archive-year mono">2024</span>
+            </div>
+            <div class="archive-item">
+              <span class="archive-index mono">10</span>
+              <span class="archive-name">Simulation & Capacity Planning</span>
+              <span class="archive-desc">SimPy discrete-event models, bottleneck analysis, and scenario-based resource allocation that reduced modeled operating cost by 60%.</span>
+              <span class="archive-year mono">2025</span>
+            </div>
+            <a class="archive-item" href="https://github.com/HuaTNA/guitar-scale-navigator" target="_blank" rel="noopener">
+              <span class="archive-index mono">11</span>
+              <span class="archive-name">Guitar Scale Navigator</span>
+              <span class="archive-desc">An interactive chord and scale reference tool connecting music theory with a visual fretboard interface.</span>
+              <span class="archive-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </details>
       </div>
-      <div class="track" data-src="music/pigeon.m4a">
-        <button class="track-btn">▶</button>
-        <div class="track-info">
-          <div class="track-name">鸽子</div>
-          <div class="track-progress"><div class="track-progress-bar"></div></div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="mono eyebrow">02 · Experience</div>
+          <div><h2 class="section-title">Experience &<br><em>education.</em></h2></div>
         </div>
-        <span class="track-time">0:00</span>
+        <article class="experience reveal">
+          <div class="experience-date mono">Sep 2025 — Sep 2026<br>Toronto · Hybrid</div>
+          <div>
+            <h3 class="experience-role">AI Application Engineer Intern</h3>
+            <div class="experience-company mono">Spark Growth</div>
+            <p class="experience-overview">Built internal AI applications and automation for a growth agency serving DTC brands. My work spanned cloud agents, permission-aware retrieval, data pipelines, and reporting tools, with evaluation, reliability, and cost tracking built into the workflows.</p>
+            <dl class="experience-metrics" aria-label="Selected contributions at Spark Growth">
+              <div><dt>API tools for cloud agents</dt><dd>31</dd></div>
+              <div><dt>automated tests</dt><dd>145</dd></div>
+              <div><dt>hours saved weekly on meeting follow-up</dt><dd>20+</dd></div>
+              <div><dt>less manual reporting time</dt><dd>45%</dd></div>
+            </dl>
+            <h4 class="experience-scope">Projects & contributions</h4>
+            <div class="work-areas">
+              <details class="work-area" open>
+                <summary><h5>AI agents & permission-aware retrieval</h5></summary>
+                <ul>
+                  <li>Developed and deployed Python agents on Google Cloud Run with <strong>31 API-based tools</strong>. Connected Slack and client-agent workflows through shared persona, knowledge, and memory components.</li>
+                  <li>Built retrieval across Fathom, Gmail, Slack, and Google Meet with per-user authorization and meeting-access filters. Returned source links and timestamped evidence, with explicit states for unavailable sources and incomplete coverage.</li>
+                  <li>Added approval gates, budget limits, account routing, and persisted confirmations to control actions taken by agents.</li>
+                </ul>
+              </details>
+              <details class="work-area" open>
+                <summary><h5>Meeting automation & task classification</h5></summary>
+                <ul>
+                  <li>Built a production NLP pipeline to parse meeting transcripts, extract action items, classify tasks by project, and create tasks in Productive CRM.</li>
+                  <li>Processed <strong>100+ meetings per week</strong> at <strong>95% classification accuracy</strong>, saving <strong>20+ hours of manual work weekly</strong>.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>CRM integrations & workflow reliability</h5></summary>
+                <ul>
+                  <li>Built a webhook-driven Calendly → Productive CRM pipeline on Cloud Run for company and contact creation, deal generation, industry mapping, and duplicate detection across <strong>50+ weekly bookings</strong>.</li>
+                  <li>Created <strong>15+ Google Apps Script automations</strong> for cross-platform data synchronization, reducing manual reporting time by <strong>45%</strong>.</li>
+                  <li>Implemented idempotency, retries, webhook verification, fallback ingestion, and source-to-delivery health checks to make automated workflows easier to operate and troubleshoot.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>Analytics pipelines & natural-language querying</h5></summary>
+                <ul>
+                  <li>Automated client analytics ingestion into Google Cloud SQL using Google Apps Script and designed normalized schemas for creative performance data.</li>
+                  <li>Built a FastAPI and Claude tool-use backend for natural-language analysis of Instagram, Facebook, and LinkedIn creative performance. Explored Vertex AI embeddings for semantic retrieval.</li>
+                  <li>Improved SQL reporting through pagination, correct aggregation, and explicit handling of missing values versus zero. Worked with <strong>22 metrics per channel</strong> for Google and LinkedIn reporting.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>Report builder & self-service exports</h5></summary>
+                <ul>
+                  <li>Independently developed a full-stack report builder for daily client reporting, with a visual editor, filters, calculated metrics, saved snapshots, and shareable reports.</li>
+                  <li>Implemented optimistic locking to detect concurrent edits, compressed report payloads, and supported <strong>web, PDF, and PowerPoint exports</strong>.</li>
+                  <li>Built a separate multi-user data export application with FastAPI on Cloud Run, Google OAuth 2.0, role-based access control, and exports to Google Sheets and CSV.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>Automated testing, agent evaluation & feedback</h5></summary>
+                <ul>
+                  <li>Built <strong>145 automated tests</strong> and a <strong>13-case agent evaluation harness</strong> covering tool selection, response constraints, and execution budgets.</li>
+                  <li>Implemented thumbs-up/down feedback on agent responses and a review flow that turns flagged answers into regression-test candidates.</li>
+                  <li>Implemented rule and regex checks alongside LLM-as-a-judge scoring in a separate Web Agent OS evaluation harness.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>Observability & inference-cost optimization</h5></summary>
+                <ul>
+                  <li>Tracked prompt versions, tool calls and previews, models, tokens, cost, latency, errors, and outcomes for each agent turn to support debugging and iteration.</li>
+                  <li>Reduced project-context input tokens to <strong>roughly one-third</strong> by batching classification context.</li>
+                  <li>Resized image inputs and replaced processed image blocks with text placeholders in stored conversation history to avoid repeated vision-processing cost.</li>
+                </ul>
+              </details>
+              <details class="work-area">
+                <summary><h5>AI adoption & impact measurement</h5></summary>
+                <ul>
+                  <li>Designed an AI impact measurement framework combining platform usage telemetry with workforce time and cost data.</li>
+                  <li>Defined estimates for adoption, hours saved, cost savings, and ROI to inform feature prioritization.</li>
+                </ul>
+              </details>
+            </div>
+            <p class="experience-stack"><strong>Core stack:</strong> Python · TypeScript · FastAPI · React / Next.js · Claude API · GCP / Cloud Run · Cloud SQL · PostgreSQL / Supabase · Google Apps Script · OAuth 2.0 · Webhooks · pytest · Vitest</p>
+          </div>
+        </article>
+        <article class="experience reveal">
+          <div class="experience-date mono">2022 — Expected May 2027<br>Toronto</div>
+          <div>
+            <h3 class="experience-role">BASc, Industrial Engineering</h3>
+            <div class="experience-company mono">University of Toronto · PEY Co-op</div>
+            <div class="experience-grid">
+              <p class="experience-copy">Studying systems design with minors in Artificial Intelligence and Engineering Business. My coursework spans machine learning, deep learning, NLP, databases, optimization, operations research, and algorithms.</p>
+              <ul class="impact-list">
+                <li>Systems thinking across software, operations, and product decisions.</li>
+                <li>Applied ML work in multimodal modeling, simulation, forecasting, and optimization.</li>
+                <li>English and Chinese; currently learning French.</li>
+              </ul>
+            </div>
+            <details class="exp-details">
+              <summary class="mono">Coursework & applied methods</summary>
+              <div class="exp-detail-body">
+                <p><strong>Computing:</strong> Data Structures & Algorithms, Database Systems, Java software design, REST APIs, and full-stack application development.</p>
+                <p><strong>Modeling:</strong> Deep learning, NLP, random forests, discrete-event simulation, operations research, forecasting, and constrained optimization.</p>
+              </div>
+            </details>
+          </div>
+        </article>
       </div>
-      <div class="track" data-src="music/canon.m4a">
-        <button class="track-btn">▶</button>
-        <div class="track-info">
-          <div class="track-name">卡农</div>
-          <div class="track-progress"><div class="track-progress-bar"></div></div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="mono eyebrow">03 · About</div>
+          <div><h2 class="section-title">About & <em>toolkit.</em></h2></div>
         </div>
-        <span class="track-time">0:00</span>
+        <div class="about-grid reveal">
+          <div class="about-copy">
+            <p class="about-lede">I like turning a repetitive task into a tool someone can use.</p>
+            <p>I'm Hua, an Industrial Engineering student in Toronto. My work brings together software, AI, and operations: understanding a workflow, organizing its data, and building an application around it.</p>
+            <p>I'm especially interested in retrieval and agent memory: how a system finds the right context and uses it consistently across a longer task.</p>
+            <p>Outside engineering, I photograph landscapes and play fingerstyle and classical guitar. I speak English and Chinese, and I'm learning French.</p>
+          </div>
+          <div class="skills" id="skills">
+            <div class="skill-group">
+              <div class="skill-label mono">AI & application systems</div>
+              <div class="skill-cloud"><span class="skill">LLM agents</span><span class="skill">RAG</span><span class="skill">Tool use</span><span class="skill">Embeddings</span><span class="skill">Prompt evaluation</span><span class="skill">PyTorch</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="skill-label mono">Product engineering</div>
+              <div class="skill-cloud"><span class="skill">Python</span><span class="skill">TypeScript</span><span class="skill">FastAPI</span><span class="skill">Next.js</span><span class="skill">SQL</span><span class="skill">REST APIs</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="skill-label mono">Cloud & automation</div>
+              <div class="skill-cloud"><span class="skill">GCP</span><span class="skill">Cloud Run</span><span class="skill">Cloud SQL</span><span class="skill">Supabase</span><span class="skill">Docker</span><span class="skill">GitHub Actions</span><span class="skill">Webhooks</span></div>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <section class="section creative" id="creative">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="mono eyebrow">04 · Outside the terminal</div>
+          <div>
+            <h2 class="section-title">Photography &<br><em>guitar.</em></h2>
+            <p class="section-intro">Landscapes from my travels and a few guitar recordings. Select a photograph to see it in full.</p>
+          </div>
+        </div>
+        <div class="gallery reveal" aria-label="Selected photography">
+          <figure class="photo"><button type="button" aria-label="View photo: Layered mountain ridges"><img src="https://www.huatan.site/photo/photo-01.JPG" alt="Layered mountain ridges" loading="lazy"><span class="mono">Mountain layers</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Snow-covered mountain peaks"><img src="https://www.huatan.site/photo/photo-10.JPG" alt="Snow-covered mountain peaks" loading="lazy"><span class="mono">Snow peaks</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Glacial lake beneath mountains"><img src="https://www.huatan.site/photo/photo-03.JPG" alt="Glacial lake beneath mountains" loading="lazy"><span class="mono">Glacier lake</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Blue wall of glacial ice"><img src="https://www.huatan.site/photo/photo-05.JPG" alt="Blue wall of glacial ice" loading="lazy"><span class="mono">Ice wall</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Stone shelter in a mountain landscape"><img src="https://www.huatan.site/photo/photo-11.JPG" alt="Stone shelter in a mountain landscape" loading="lazy"><span class="mono">Stone shelter</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Green rolling highlands"><img src="https://www.huatan.site/photo/photo-02.JPG" alt="Green rolling highlands" loading="lazy"><span class="mono">Green highlands</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Yaks beside a highland lake"><img src="https://www.huatan.site/photo/photo-09.JPG" alt="Yaks beside a highland lake" loading="lazy"><span class="mono">Lakeside</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Potala Palace illuminated at night"><img src="https://www.huatan.site/photo/photo-04.JPG" alt="Potala Palace illuminated at night" loading="lazy"><span class="mono">Potala Palace</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Detailed temple murals"><img src="https://www.huatan.site/photo/photo-07.JPG" alt="Detailed temple murals" loading="lazy"><span class="mono">Temple murals</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: A red alleyway"><img src="https://www.huatan.site/photo/photo-08.JPG" alt="A red alleyway" loading="lazy"><span class="mono">Red alley</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: A glacier summit"><img src="https://www.huatan.site/photo/photo-14.JPG" alt="A glacier summit" loading="lazy"><span class="mono">Glacier summit</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Prayer flags in the mountains"><img src="https://www.huatan.site/photo/photo-13.JPG" alt="Prayer flags in the mountains" loading="lazy"><span class="mono">Prayer flags</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Aurora across a night sky"><img src="https://www.huatan.site/photo/photo-12.JPG" alt="Aurora across a night sky" loading="lazy"><span class="mono">Aurora</span></button></figure>
+          <figure class="photo"><button type="button" aria-label="View photo: Wildlife on safari"><img src="https://www.huatan.site/photo/photo-06.JPG" alt="Wildlife on safari" loading="lazy"><span class="mono">Safari</span></button></figure>
+        </div>
+        <div class="creative-note reveal">
+          <p>Mountains, quiet streets, and nights under the aurora.</p>
+          <div>
+          <div class="track-links" aria-label="Guitar recordings">
+            <button type="button" data-audio="https://www.huatan.site/music/outside-world.m4a">▶ 外面的世界</button>
+            <button type="button" data-audio="https://www.huatan.site/music/Solo.m4a">▶ 海阔天空</button>
+            <button type="button" data-audio="https://www.huatan.site/music/pigeon.m4a">▶ 鸽子</button>
+            <button type="button" data-audio="https://www.huatan.site/music/canon.m4a">▶ 卡农</button>
+          </div>
+          <audio class="music-player" id="music-player" controls preload="none" aria-label="Guitar recording player" hidden></audio>
+          <p class="audio-status" id="audio-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-caption">
+    <button class="lightbox-close" type="button" autofocus>Close ×</button>
+    <img id="lightbox-image" alt="">
+    <p id="lightbox-caption"></p>
+  </dialog>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h2 class="footer-title">Let's <em>connect.</em></h2>
+          <p class="footer-copy">Open to AI / LLM Application Engineer and ML Engineer opportunities. Based in Toronto; expected graduation in May 2027.</p>
+        </div>
+        <div class="footer-links mono">
+          <a href="mailto:hua.tan@mail.utoronto.ca">hua.tan@mail.utoronto.ca ↗</a>
+          <a href="https://www.linkedin.com/in/hua-tan-751b31224/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://github.com/HuaTNA" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="footer-meta mono"><span>Hua Tan · Toronto, Canada</span><span>© <span id="year">2026</span></span></div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- LIGHTBOX -->
-<div id="lightbox" onclick="closeLightbox(event)">
-  <button id="lightbox-close" onclick="closeLightbox()">×</button>
-  <img id="lightbox-img" src="" alt=""/>
-  <div id="lightbox-caption"></div>
-</div>
+  <script>
+    const nav = document.getElementById('nav');
+    const year = document.getElementById('year');
+    year.textContent = new Date().getFullYear();
+    const updateNav = () => nav.classList.toggle('scrolled', scrollY > 36);
+    updateNav();
+    addEventListener('scroll', updateNav, { passive: true });
 
-<!-- FOOTER -->
-<footer id="contact">
-  <div>
-    <div class="footer-big">Let's<br><em>Connect</em></div>
-    <p class="footer-sub">
-      Open to ML Engineer and AI/LLM Application Engineer opportunities.<br>
-      Reach out at <a href="mailto:hua.tan@mail.utoronto.ca">hua.tan@mail.utoronto.ca</a>
-      &nbsp;·&nbsp; +1 (437) 986-7078
-    </p>
-  </div>
-  <div class="footer-links">
-    <a href="https://www.linkedin.com/in/hua-tan-751b31224/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-    <a href="https://github.com/HuaTNA" target="_blank" rel="noopener" class="footer-link">GitHub</a>
-    <a href="mailto:hua.tan@mail.utoronto.ca" class="footer-link">Email</a>
-  </div>
-</footer>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    const closeMenu = () => {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = 'Menu';
+      navLinks.classList.remove('open');
+    };
+    menuToggle.addEventListener('click', () => {
+      const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.textContent = open ? 'Close' : 'Menu';
+      navLinks.classList.toggle('open', open);
+    });
+    navLinks.addEventListener('click', event => {
+      if (event.target.closest('a')) closeMenu();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      if (!nav.contains(event.target)) closeMenu();
+    });
+    matchMedia('(max-width: 900px)').addEventListener('change', closeMenu);
 
-<script>
-// YEAR
-document.getElementById('hero-year').textContent = new Date().getFullYear();
-
-// CURSOR
-const cur=document.getElementById('cur');
-const ring=document.getElementById('cur-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cur.style.left=mx+'px';cur.style.top=my+'px';
-});
-(function loop(){
-  rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';cur.style.background='var(--gold)';ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='var(--gold)';ring.style.opacity='.2'});
-  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';cur.style.background='var(--red)';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='var(--red)';ring.style.opacity='.5'});
-});
-
-// NAV SCROLL
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60)});
-
-// SCROLL REVEAL
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.12});
-document.querySelectorAll('.reveal,.exp-item,.proj-card,.skill-col').forEach(el=>obs.observe(el));
-
-// STAGGER projects
-document.querySelectorAll('.proj-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s'});
-
-// LIGHTBOX
-function openLightbox(cell){
-  const img=cell.querySelector('img');
-  if(!img)return; // no-op if placeholder
-  const lb=document.getElementById('lightbox');
-  document.getElementById('lightbox-img').src=img.src;
-  document.getElementById('lightbox-caption').textContent=cell.dataset.label||'';
-  lb.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLightbox(e){
-  if(e&&e.target!==document.getElementById('lightbox')&&e.target.id!=='lightbox-close')return;
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox({target:document.getElementById('lightbox')})});
-
-// AUDIO PLAYER
-(function(){
-  const audio=new Audio();
-  audio.preload='auto';
-  let activeTrack=null;
-  function fmt(s){s=Math.floor(s||0);const m=Math.floor(s/60);return m+':'+(''+(s%60)).padStart(2,'0')}
-  function play(tr){
-    const btn=tr.querySelector('.track-btn');
-    if(activeTrack===tr){
-      if(audio.paused){audio.play().catch(e=>console.error('Play error:',e));btn.textContent='❚❚';tr.classList.add('playing')}
-      else{audio.pause();btn.textContent='▶';tr.classList.remove('playing')}
-      return;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            entry.target.classList.remove('pending');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .01 });
+      document.querySelectorAll('.reveal').forEach(el => {
+        el.classList.add('pending');
+        observer.observe(el);
+      });
     }
-    if(activeTrack){
-      activeTrack.querySelector('.track-btn').textContent='▶';
-      activeTrack.classList.remove('playing');
-      activeTrack.querySelector('.track-progress-bar').style.width='0';
-    }
-    activeTrack=tr;
-    audio.src=tr.dataset.src;
-    audio.load();
-    audio.addEventListener('canplay',function oncan(){
-      audio.removeEventListener('canplay',oncan);
-      audio.play().then(()=>{
-        btn.textContent='❚❚';tr.classList.add('playing');
-      }).catch(e=>console.error('Play error:',e));
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    let previousOverflow = '';
+    document.querySelectorAll('.photo button').forEach(button => {
+      button.addEventListener('click', () => {
+        const image = button.querySelector('img');
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt;
+        lightboxCaption.textContent = button.querySelector('span').textContent;
+        previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        lightbox.showModal();
+      });
     });
-  }
-  document.querySelectorAll('.track').forEach(tr=>{
-    tr.querySelector('.track-btn').addEventListener('click',()=>play(tr));
-    tr.querySelector('.track-progress').addEventListener('click',e=>{
-      if(activeTrack!==tr||!audio.duration)return;
-      audio.currentTime=audio.duration*(e.offsetX/e.currentTarget.offsetWidth);
+    lightbox.querySelector('button').addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', event => {
+      const bounds = lightbox.getBoundingClientRect();
+      if (event.target === lightbox && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) lightbox.close();
     });
-    // preload duration
-    const tmp=new Audio();
-    tmp.preload='metadata';
-    tmp.src=tr.dataset.src;
-    tmp.addEventListener('loadedmetadata',()=>{
-      tr.querySelector('.track-time').textContent=fmt(tmp.duration);
-      tr.dataset.duration=tmp.duration;
+    lightbox.addEventListener('close', () => {
+      document.body.style.overflow = previousOverflow;
     });
-  });
-  audio.addEventListener('timeupdate',()=>{
-    if(!activeTrack)return;
-    activeTrack.querySelector('.track-progress-bar').style.width=(audio.currentTime/audio.duration*100)+'%';
-    activeTrack.querySelector('.track-time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
-  });
-  audio.addEventListener('error',()=>{
-    console.error('Audio error:',audio.error,audio.src);
-    if(activeTrack)activeTrack.querySelector('.track-name').style.color='#C94040';
-  });
-  audio.addEventListener('ended',()=>{
-    if(!activeTrack)return;
-    activeTrack.querySelector('.track-btn').textContent='▶';activeTrack.classList.remove('playing');
-    activeTrack.querySelector('.track-progress-bar').style.width='0';
-    activeTrack.querySelector('.track-time').textContent=fmt(activeTrack.dataset.duration||0);
-    const tracks=[...document.querySelectorAll('.track')];
-    const idx=tracks.indexOf(activeTrack);
-    activeTrack=null;
-    if(idx<tracks.length-1)play(tracks[idx+1]);
-  });
-})();
-</script>
+
+    const player = document.getElementById('music-player');
+    const audioStatus = document.getElementById('audio-status');
+    const trackButtons = Array.from(document.querySelectorAll('[data-audio]'));
+    let activeButton = null;
+    let playRequest = 0;
+    const updateTrackButtons = () => {
+      trackButtons.forEach(button => {
+        const playing = button === activeButton && !player.paused;
+        button.setAttribute('aria-pressed', String(playing));
+        button.textContent = `${playing ? '❚❚' : '▶'} ${button.dataset.label}`;
+        button.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${button.dataset.label}`);
+      });
+    };
+    trackButtons.forEach(button => {
+      button.dataset.label = button.textContent.replace(/^▶ /, '');
+      button.addEventListener('click', async () => {
+        const request = ++playRequest;
+        if (activeButton === button && !player.paused) {
+          player.pause();
+          return;
+        }
+        if (activeButton !== button) {
+          player.pause();
+          activeButton = button;
+          player.src = button.dataset.audio;
+        }
+        player.hidden = false;
+        audioStatus.textContent = `Loading: ${button.dataset.label}`;
+        try {
+          await player.play();
+          if (request !== playRequest) return;
+          audioStatus.textContent = button.dataset.label;
+        } catch (error) {
+          if (request !== playRequest) return;
+          audioStatus.textContent = error.name === 'AbortError' ? button.dataset.label : 'This recording could not be played. Please try again.';
+        }
+        updateTrackButtons();
+      });
+    });
+    player.addEventListener('play', updateTrackButtons);
+    player.addEventListener('pause', updateTrackButtons);
+    player.addEventListener('ended', () => {
+      updateTrackButtons();
+      audioStatus.textContent = activeButton ? `Finished: ${activeButton.dataset.label}` : '';
+    });
+    player.addEventListener('error', () => {
+      updateTrackButtons();
+      audioStatus.textContent = 'This recording could not be loaded. Please try another track.';
+    });
+    updateTrackButtons();
+  </script>
 </body>
 </html>
